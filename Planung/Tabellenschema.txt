@@ -1,0 +1,14 @@
+User:
+	PK	INT		U_ID
+		VARCHAR2 20	Username
+		VARCHAR2 50	Email
+		VARCHAR2 ?	Password_Hash
+		DATETIME	Brithday
+
+Message:
+	PK	INT		M_ID
+	FK	INT		Sender_ID
+	FK	INT		Receiver_ID
+		VARCHAR2 2000	Message
+		DATETIME	DateTime_Send
+		DATETIME	DateTime_Receive
