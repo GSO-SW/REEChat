@@ -6,15 +6,18 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Security.Cryptography;
 using REEChatDLL;
+using System.Net;
+using System.Net.Sockets;
 
 namespace Server
 {
 	class Program
 	{
+		static TcpListener server = null;
+
 		static void Main(string[] args)
 		{
 			WriteLine("Willkommen bei REEChat Server!");
-			WriteLine("Starte den Server...");
 			WriteLine("Überprüfung der Datenbankverbindung...");
 
 			while (!DBController.ConnectionAvailable())
@@ -23,13 +26,77 @@ namespace Server
 				Thread.Sleep(10 * 1000);
 			}
 			WriteLine("Datenbankverbindung erfolgreich!");
-			Console.ReadKey();
+
+			WriteLine("Server wird initialisiert...");
+			server = new TcpListener(new IPEndPoint(ConnectionConfig.address, ConnectionConfig.port));
+
+			WriteLine("Server wird gestartet...");
+			server.Start();
+
+			WriteLine("Server erfolgreich gestartet!");
+
+			while (true)
+			{
+				TcpClient client = server.AcceptTcpClient();
+
+				NetworkStream stream = client.GetStream();
+
+				byte[] buffer = new byte[client.Available];
+				stream.Read(buffer, 0, buffer.Length);
+
+				if (!TryConvertInputByte(buffer, out PackageType packageType, out byte[] userData))
+					WriteLine("Fehlerhaftes Paket empfangen!");
+				else
+				{
+					throw new NotImplementedException();
+				}
+
+				stream.Close();
+			}
 		}
 
 		static void WriteLine(string text)
 		{
 			string time = "[" + DateTime.Now.ToString("HH':'mm':'ss") + "] ";
 			Console.Write(time + text + "\n");
+		}
+
+		static bool TryConvertInputByte(byte[] input, out PackageType packageType, out byte[] userData)
+		{
+			packageType = 0;
+			userData = null;
+
+			if (input.Length <= 3)
+				return false;
+			if (input[0] != PackageControl.StartOfHeader && input[input.Length - 1] != PackageControl.EndOfText)
+				return false;
+
+			byte[] typeByte;
+
+			for (int i = 1; i < input.Length; i++)
+			{
+				if (input[i] == PackageControl.StartOfText)
+				{
+					typeByte = new byte[i - 1];
+					Array.Copy(input, 1, typeByte, 0, typeByte.Length);
+
+					userData = new byte[input.Length - i - 1];
+					Array.Copy(input, i + 1, userData, 0, userData.Length);
+
+					if (!int.TryParse(Encoding.UTF8.GetString(typeByte), out int id))
+						return false;
+					packageType = (PackageType)id;
+					return true;
+				}
+			}
+			return false;
+		}
+
+		static PackageType GetPackageType(byte[] typeByte)
+		{
+			if (int.TryParse(Encoding.UTF8.GetString(typeByte), out int id))
+				return (PackageType)id;
+			return 0;
 		}
 	}
 }

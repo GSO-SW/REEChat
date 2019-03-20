@@ -11,7 +11,7 @@ namespace REEChatDLL
 		/// <summary>
 		/// Classified package type
 		/// </summary>
-		PackageType Type { get; set; }
+		public PackageType Type { get; set; }
 
 		/// <summary>
 		/// Returns a byte array containing all user data.

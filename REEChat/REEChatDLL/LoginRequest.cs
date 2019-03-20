@@ -24,6 +24,7 @@ namespace REEChatDLL
 		/// <param name="passwordHash">Login password hash</param>
 		public LoginRequest(string email, string passwordHash)
 		{
+			Type = PackageType.LoginRequest;
 			Email = email;
 			PasswordHash = passwordHash;
 		}
