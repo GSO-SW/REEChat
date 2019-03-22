@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Security.Cryptography;
 using REEChatDLL;
-using System.Net;
-using System.Net.Sockets;
 
 namespace Server
 {
@@ -28,30 +28,32 @@ namespace Server
 			WriteLine("Datenbankverbindung erfolgreich!");
 
 			WriteLine("Server wird initialisiert...");
-			server = new TcpListener(new IPEndPoint(ConnectionConfig.address, ConnectionConfig.port));
+			server = new TcpListener(IPAddress.Any, ConnectionConfig.serverPort);
 
 			WriteLine("Server wird gestartet...");
-			server.Start();
+			server.Start(10);
 
 			WriteLine("Server erfolgreich gestartet!");
 
 			while (true)
 			{
 				TcpClient client = server.AcceptTcpClient();
+				string clientAddress = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
 
 				NetworkStream stream = client.GetStream();
 
 				byte[] buffer = new byte[client.Available];
 				stream.Read(buffer, 0, buffer.Length);
 
-				if (!TryConvertInputByte(buffer, out PackageType packageType, out byte[] userData))
-					WriteLine("Fehlerhaftes Paket empfangen!");
-				else
-				{
-					throw new NotImplementedException();
-				}
-
 				stream.Close();
+
+				if (!TryConvertInputByte(buffer, out PackageType packageType, out byte[] userData))
+				{
+					WriteLine("Fehlerhaftes Paket von [" + clientAddress + "] empfangen!");
+					SendController.ReceivedIncorrectPackage(clientAddress);
+				}
+				else
+					DataHandling(packageType, userData, clientAddress);
 			}
 		}
 
@@ -80,7 +82,7 @@ namespace Server
 					typeByte = new byte[i - 1];
 					Array.Copy(input, 1, typeByte, 0, typeByte.Length);
 
-					userData = new byte[input.Length - i - 1];
+					userData = new byte[input.Length - i - 2];
 					Array.Copy(input, i + 1, userData, 0, userData.Length);
 
 					if (!int.TryParse(Encoding.UTF8.GetString(typeByte), out int id))
@@ -92,11 +94,53 @@ namespace Server
 			return false;
 		}
 
-		static PackageType GetPackageType(byte[] typeByte)
+		static bool TryGetPackageType(byte[] typeByte, out PackageType packageType)
 		{
-			if (int.TryParse(Encoding.UTF8.GetString(typeByte), out int id))
-				return (PackageType)id;
-			return 0;
+			packageType = 0;
+			if (!int.TryParse(Encoding.UTF8.GetString(typeByte), out int id))
+				return false;
+			packageType = (PackageType)id;
+			return true;
+		}
+
+		static void DataHandling(PackageType packageType, byte[] userData, string clientAddress)
+		{
+			switch (packageType)
+			{
+				case PackageType.RegistrationRequest:
+					break;
+				case PackageType.LoginRequest:
+					if (LoginRequest.TryParse(userData, out LoginRequest login))
+					{
+						WriteLine("Erfolgreich Paket von [" + clientAddress + "] empfangen!");
+						Feedback transmittedFeedback = DataController.LoginRequest(login, clientAddress);
+						WriteLine("Ergebnis: " + transmittedFeedback.ToString());
+					}
+					else
+					{
+						WriteLine("Fehlerhaftes Paket von [" + clientAddress + "] empfangen!");
+						SendController.ReceivedIncorrectPackage(clientAddress);
+					}
+					break;
+				case PackageType.Online:
+					break;
+				case PackageType.Offline:
+					break;
+				case PackageType.UserList:
+					break;
+				case PackageType.UserAdd:
+					break;
+				case PackageType.UserRemove:
+					break;
+				case PackageType.TextMessageSend:
+					break;
+				case PackageType.TextMessageReceive:
+					break;
+				case PackageType.Ping:
+					break;
+				case PackageType.Feedback:
+					break;
+			}
 		}
 	}
 }

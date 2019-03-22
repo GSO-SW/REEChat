@@ -29,6 +29,41 @@ namespace REEChatDLL
 			PasswordHash = passwordHash;
 		}
 
+		/// <summary>
+		/// Converts a byte array to a LoginRequest Package and returns a value indicating whether the conversion was successful.
+		/// </summary>
+		/// <param name="data">Package byte array</param>
+		/// <param name="loginRequest">Output LoginRequest package</param>
+		/// <returns>Returns whether the conversion was successful.</returns>
+		public static bool TryParse(byte[] data, out LoginRequest loginRequest)
+		{
+			loginRequest = null;
+
+			byte[] emailByte, passwordByte;
+
+			for (int i = 0; i < data.Length; i++)
+			{
+				if (data[i] == PackageControl.UnitSeperator)
+				{
+					emailByte = new byte[i];
+					Array.Copy(data, 0, emailByte, 0, emailByte.Length);
+
+					passwordByte = new byte[data.Length - i - 1];
+					Array.Copy(data, i + 1, passwordByte, 0, passwordByte.Length);
+
+					string email = Encoding.UTF8.GetString(emailByte);
+					string password = Encoding.UTF8.GetString(passwordByte);
+
+					loginRequest = new LoginRequest(email, password);
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// Convert the contect to a byte array
+		/// </summary>
 		public override byte[] UserData()
 		{
 			int i = 0;

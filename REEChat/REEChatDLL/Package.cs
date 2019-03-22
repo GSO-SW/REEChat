@@ -55,6 +55,7 @@ namespace REEChatDLL
 			finalBytes[i] = PackageControl.EndOfText;
 			i += 1;
 
+			//return byte array
 			return finalBytes;
 		}
 	}
