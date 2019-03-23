@@ -34,6 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -46,14 +47,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="CConnectionController.cs" />
+    <Compile Include="CDataController.cs" />
+    <Compile Include="CFormController.cs" />
+    <Compile Include="CLoginView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="CLoginView.Designer.cs">
+      <DependentUpon>CLoginView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="CMainView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CMainView.Designer.cs">
+      <DependentUpon>CMainView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="CLoginView.resx">
+      <DependentUpon>CLoginView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CMainView.resx">
+      <DependentUpon>CMainView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -75,6 +91,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\School\Carsharing\CustomControl\CustomControl.csproj">
+      <Project>{b9d79af0-d8fa-4473-859c-81f90213643e}</Project>
+      <Name>CustomControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\REEChatDLL\REEChatDLL.csproj">
+      <Project>{21D9C94D-2403-45CB-97C4-1E12ED0A423E}</Project>
+      <Name>REEChatDLL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
