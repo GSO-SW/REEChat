@@ -16,7 +16,8 @@ namespace REEChatDLL
 		IncorrectPackage = 2,
 		LoginDenied = 10,
 		LoginAccepted = 11,
-		LoginError = 12
+		RegistrationDenied = 20,
+		RegistrationAccepted = 21
 	}
 
 	public class Feedback : Package

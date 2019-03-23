@@ -42,8 +42,6 @@ namespace Client
 									MessageBox.Show("Login erfolgreich!");
 									CFormController.Login();
 									break;
-								case FeedbackCode.LoginError:
-									break;
 								default:
 									break;
 							}

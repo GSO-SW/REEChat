@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Windows.Forms;
 
@@ -15,7 +16,7 @@ namespace Client
 
 	public partial class CLoginView : Form
 	{
-		public int Counter { get; set; }
+		internal int Counter { get; set; }
 
 		private bool waitForFeedback;
 
@@ -53,8 +54,16 @@ namespace Client
 			{
 				WaitForFeedback = true;
 
+				string address = txtAddress.TextWithoutWatermark;
 				string email = txtEmail.TextWithoutWatermark;
 				string password = txtPassword.TextWithoutWatermark;
+
+				if (!IPAddress.TryParse(address, out IPAddress ipAddress))
+				{
+					MessageBox.Show("Ungültige IP Addresse.");
+					WaitForFeedback = false;
+					return;
+				}
 
 				if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
 				{
@@ -94,6 +103,11 @@ namespace Client
 				MessageBox.Show("Keine Antwort vom Server erhalten!");
 				WaitForFeedback = false;
 			}
+		}
+
+		private void Register_Click(object sender, EventArgs e)
+		{
+			new CRegistrationForm(txtAddress.TextWithoutWatermark).ShowDialog();
 		}
 	}
 }
