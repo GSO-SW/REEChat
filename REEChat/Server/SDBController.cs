@@ -9,7 +9,7 @@ using REEChatDLL;
 
 namespace Server
 {
-	internal static class DBController
+	internal static class SDBController
 	{
 		private static readonly string connectionString = @"host=localhost;user=root;database=reechat";
 
@@ -40,7 +40,7 @@ namespace Server
 		}
 
 		/// <summary>
-		/// Try to verify a user from the database by his email address and password.
+		/// Tries to verify a user from the database by his email address and password.
 		/// </summary>
 		/// <param name="email">The email from the user who is requested</param>
 		/// <param name="passwordHash">The password from the user who is requested</param>
@@ -78,6 +78,45 @@ namespace Server
 				result = true;
 
 			return true;
+		}
+
+		/// <summary>
+		/// Tries to update the last ip address of a user.
+		/// </summary>
+		/// <param name="email">The email of the user</param>
+		/// <param name="address">The ip address of the user</param>
+		/// <returns>Returns false if there was a problem with the database connection, otherwise true.</returns>
+		internal static bool TryClientUpdateLastIPAddress(string email, string address)
+		{
+			using (MySqlConnection con = new MySqlConnection(connectionString))
+			{
+				try
+				{
+					con.Open();
+					using (MySqlCommand command = new MySqlCommand("UPDATE `user` SET `LastIPAddress`= null WHERE `LastIPAddress`=@LastIPAddress", con))
+					{
+						command.Parameters.AddWithValue("LastIPAddress", address);
+
+						command.ExecuteNonQuery();
+					}
+					using (MySqlCommand command = new MySqlCommand("UPDATE `user` SET `LastIPAddress`=@LastIPAddress WHERE `Email`=@Email", con))
+					{
+						command.Parameters.AddWithValue("LastIPAddress", address);
+						command.Parameters.AddWithValue("Email", email);
+
+						command.ExecuteNonQuery();
+					}
+				}
+				catch (Exception)
+				{
+					return false;
+				}
+				finally
+				{
+					con.Close();
+				}
+				return true;
+			}
 		}
 	}
 }

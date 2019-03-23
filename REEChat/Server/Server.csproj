@@ -57,15 +57,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataController.cs" />
-    <Compile Include="DBController.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="SDataController.cs" />
+    <Compile Include="SDBController.cs" />
+    <Compile Include="SProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SendController.cs" />
+    <Compile Include="SConnectionController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\REEChatDLL\REEChatDLL.csproj">
