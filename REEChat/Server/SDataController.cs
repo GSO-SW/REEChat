@@ -11,15 +11,24 @@ namespace Server
 {
 	internal static class SDataController
 	{
+		/// <summary>
+		/// Processes a received package
+		/// </summary>
+		/// <param name="package">received package</param>
+		/// <param name="clientAddress">address of the sender of the package</param>
 		internal static void ProcessingReceivedPackage(Package package, string clientAddress)
 		{
+			Feedback transmittedFeedback;
 			switch (package.Type)
 			{
 				case PackageType.RegistrationRequest:
+					RegistrationRequest request = (RegistrationRequest)package;
+					transmittedFeedback = RegistrationRequest(request, clientAddress);
+					SProgram.WriteLine("Ergebnis: " + transmittedFeedback.FeedbackCode.ToString());
 					break;
 				case PackageType.LoginRequest:
 					LoginRequest login = (LoginRequest)package;
-					Feedback transmittedFeedback = LoginRequest(login, clientAddress);
+					transmittedFeedback = LoginRequest(login, clientAddress);
 					SProgram.WriteLine("Ergebnis: " + transmittedFeedback.FeedbackCode.ToString());
 					break;
 				case PackageType.Online:
@@ -56,18 +65,86 @@ namespace Server
 			if (!SDBController.TryVerifyUser(loginRequest.Email, loginRequest.PasswordHash, out bool result))
 				feedback = new Feedback(FeedbackCode.InternalServerError);
 			else
+			{
 				if (result)
-				if (SDBController.TryClientUpdateLastIPAddress(loginRequest.Email, clientAddress))
-					feedback = new Feedback(FeedbackCode.LoginAccepted);
+				{
+					if (SDBController.TryClientUpdateLastIPAddress(loginRequest.Email, clientAddress))
+						feedback = new Feedback(FeedbackCode.LoginAccepted);
+					else
+						feedback = new Feedback(FeedbackCode.InternalServerError);
+				}
 				else
-					feedback = new Feedback(FeedbackCode.InternalServerError);
-			else
-				feedback = new Feedback(FeedbackCode.LoginDenied);
+					feedback = new Feedback(FeedbackCode.LoginDenied);
+			}
+			
+			SConnectionController.SendPackage(feedback, clientAddress);
 
+			return feedback;
+		}
+
+		/// <summary>
+		/// Handle a RegistrationRequest
+		/// </summary>
+		/// <param name="request">RegistrationRequest to handle</param>
+		/// <param name="clientAddress">address of the sender of the package</param>
+		/// <returns>the feedback transmitted</returns>
+		private static Feedback RegistrationRequest(RegistrationRequest request, string clientAddress)
+		{
+			Feedback feedback = null;
+
+			if (!CheckRegistrationRequest(request))
+				feedback = new Feedback(FeedbackCode.RegistrationDenied);
+			else
+			{
+				switch (SDBController.TryClientAdd(request))
+				{
+					case 0:
+						feedback = new Feedback(FeedbackCode.RegistrationAccepted);
+						break;
+					case 1:
+						feedback = new Feedback(FeedbackCode.InternalServerError);
+						break;
+					case 2:
+						feedback = new Feedback(FeedbackCode.RegistrationDeniedEmailAlreadyUsed);
+						break;
+				}
+			}
 
 			SConnectionController.SendPackage(feedback, clientAddress);
 
 			return feedback;
+		}
+
+		/// <summary>
+		/// Checks a RegistrationRequest
+		/// </summary>
+		/// <param name="request">RegistrationRequest to check</param>
+		/// <returns>Indicates if it was successful</returns>
+		private static bool CheckRegistrationRequest(RegistrationRequest request)
+		{
+			string email = request.Email;
+			string nickname = request.Nickname;
+			string password = request.PasswordHash;
+			DateTime date = request.Birthday;
+
+			if (string.IsNullOrWhiteSpace(email))
+				return false;
+			if (string.IsNullOrWhiteSpace(nickname))
+				return false;
+			if (string.IsNullOrWhiteSpace(password))
+				return false;
+			if (!email.Contains('@') || !email.Contains('.'))
+				return false;
+			if (nickname.Length > 16 || nickname.Length < 4)
+				return false;
+			if (password.Length != 64)
+				return false;
+
+
+			if (DateConverter.GetAgeFromDate(date) < 12)
+				return false;
+
+			return true;
 		}
 	}
 }

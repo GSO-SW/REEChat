@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConnectionConfig.cs" />
+    <Compile Include="Converter.cs" />
     <Compile Include="Encode.cs" />
     <Compile Include="Feedback.cs" />
     <Compile Include="LoginRequest.cs" />

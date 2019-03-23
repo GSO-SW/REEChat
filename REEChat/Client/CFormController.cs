@@ -10,7 +10,8 @@ namespace Client
 	internal static class CFormController
 	{
 		public static CLoginView LoginView { get; set; } = null;
-		public static CMainView Main { get; set; } = null;
+		public static CMainView MainView { get; set; } = null;
+		public static CRegistrationForm RegistrationView { get; set; }
 		public static string RegisteredEmail { get; private set; } = "";
 
 		/// <summary>
@@ -44,7 +45,15 @@ namespace Client
 		/// </summary>
 		private static void CancelMainView()
 		{
-			Main.Invoke(new CloseDelagate(Main.Close));
+			MainView.Invoke(new CloseDelagate(MainView.Close));
+		}
+
+		/// <summary>
+		/// Cancels RegistrationView
+		/// </summary>
+		public static void CancelRegistrationView()
+		{
+			RegistrationView.Invoke(new CloseDelagate(RegistrationView.Close));
 		}
 	}
 }

@@ -30,10 +30,12 @@ namespace Client
 						break;
 					case PackageType.Feedback:
 						Feedback feedback = (Feedback)package;
-						if (CFormController.LoginView.WaitForFeedback)
+						if (CFormController.LoginView.WaitForFeedback || CFormController.RegistrationView.WaitForFeedback)
+						{
 							switch (feedback.FeedbackCode)
 							{
 								case FeedbackCode.InternalServerError:
+									MessageBox.Show("Der Server hat interne Probleme!");
 									break;
 								case FeedbackCode.LoginDenied:
 									MessageBox.Show("Login verweigert! Falsche Anmeldedaten!");
@@ -42,9 +44,18 @@ namespace Client
 									MessageBox.Show("Login erfolgreich!");
 									CFormController.Login();
 									break;
-								default:
+								case FeedbackCode.RegistrationDenied:
+									MessageBox.Show("Der Registrierungsanfrage wurde abgelehnt! \nWahrscheinlich wurden die Daten verändert!");
+									break;
+								case FeedbackCode.RegistrationAccepted:
+									MessageBox.Show("Registrierung erfolgreich!");
+									CFormController.CancelRegistrationView();
+									break;
+								case FeedbackCode.RegistrationDeniedEmailAlreadyUsed:
+									MessageBox.Show("Email wird bereits verwendet!");
 									break;
 							}
+						}
 						break;
 				}
 

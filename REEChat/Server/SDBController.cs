@@ -118,5 +118,41 @@ namespace Server
 				return true;
 			}
 		}
+
+		/// <summary>
+		/// Tries to add a user to the DB
+		/// </summary>
+		/// <param name="request"></param>
+		/// <returns>Returns false if there was a problem with the database connection, otherwise true.</returns>
+		internal static int TryClientAdd(RegistrationRequest request)
+		{
+			using (MySqlConnection con = new MySqlConnection(connectionString))
+			{
+				try
+				{
+					con.Open();
+					using (MySqlCommand command = new MySqlCommand("INSERT INTO `user` (`Nickname`, `Email`, `Password`, `Birthday`) VALUES (@Nickname, @Email, @Password, @Birthday);", con))
+					{
+						command.Parameters.AddWithValue("Nickname", request.Nickname);
+						command.Parameters.AddWithValue("Email", request.Email);
+						command.Parameters.AddWithValue("Password", request.PasswordHash);
+						command.Parameters.AddWithValue("Birthday", request.Birthday.ToString("yyyy-MM-dd"));
+
+						command.ExecuteNonQuery();
+					}
+				}
+				catch (Exception e)
+				{
+					if (((MySqlException)e).Number == 1062)
+						return 2;
+					return 1;
+				}
+				finally
+				{
+					con.Close();
+				}
+				return 0;
+			}
+		}
 	}
 }

@@ -135,6 +135,7 @@
 			this.Controls.Add(this.txtEmail);
 			this.Name = "CRegistrationForm";
 			this.Text = "CRegistrationForm";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CRegistrationForm_FormClosing);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

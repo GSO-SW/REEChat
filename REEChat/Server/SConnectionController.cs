@@ -94,7 +94,6 @@ namespace Server
 			}
 		}
 
-
 		/// <summary>
 		/// Sends a package
 		/// </summary>
