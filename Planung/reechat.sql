@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 15. Mrz 2019 um 22:05
+-- Erstellungszeit: 23. Mrz 2019 um 15:57
 -- Server-Version: 10.1.36-MariaDB
 -- PHP-Version: 7.2.10
 
@@ -48,8 +48,16 @@ CREATE TABLE `user` (
   `Nickname` varchar(16) NOT NULL,
   `Email` varchar(50) NOT NULL,
   `Password` varchar(100) NOT NULL,
-  `Birthday` date NOT NULL
+  `Birthday` date NOT NULL,
+  `LastIPAddress` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Daten für Tabelle `user`
+--
+
+INSERT INTO `user` (`U_ID`, `Nickname`, `Email`, `Password`, `Birthday`, `LastIPAddress`) VALUES
+(1, 'replayme', 'replayme87@gmail.com', 'ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f', '2000-01-01', '192.168.178.2');
 
 --
 -- Indizes der exportierten Tabellen
@@ -69,7 +77,8 @@ ALTER TABLE `message`
 ALTER TABLE `user`
   ADD PRIMARY KEY (`U_ID`),
   ADD UNIQUE KEY `Nickname` (`Nickname`),
-  ADD UNIQUE KEY `Email` (`Email`);
+  ADD UNIQUE KEY `Email` (`Email`),
+  ADD UNIQUE KEY `LastIPAddress` (`LastIPAddress`);
 
 --
 -- AUTO_INCREMENT für exportierte Tabellen
@@ -85,7 +94,7 @@ ALTER TABLE `message`
 -- AUTO_INCREMENT für Tabelle `user`
 --
 ALTER TABLE `user`
-  MODIFY `U_ID` int(9) NOT NULL AUTO_INCREMENT;
+  MODIFY `U_ID` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints der exportierten Tabellen
