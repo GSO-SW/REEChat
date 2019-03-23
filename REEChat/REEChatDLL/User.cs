@@ -13,14 +13,24 @@ namespace REEChatDLL
 		public string PasswordHash { get; set; }
 		public DateTime Birthday { get; set; }
 
-		public User(string email, string nickname, string passwordHash, DateTime birthday)
+		/// <summary>
+		/// Creates a new instance of type user
+		/// </summary>
+		/// <param name="email">email of the user</param>
+		/// <param name="nickname">nickname of the user</param>
+		/// <param name="birthday">birthday of the user</param>
+		public User(string email, string nickname, DateTime birthday)
 		{
 			Email = email;
 			Nickname = nickname;
-			PasswordHash = passwordHash;
 			Birthday = birthday;
 		}
 
+		/// <summary>
+		/// Creates a new instance of type user
+		/// </summary>
+		/// <param name="email">email of the user</param>
+		/// <param name="passwordHash">password hash of the user</param>
 		public User(string email, string passwordHash)
 		{
 			Email = email;

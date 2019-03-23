@@ -33,6 +33,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,19 +50,7 @@
     <Compile Include="Package.cs" />
     <Compile Include="PackageControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RoundButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="RoundButton.Designer.cs">
-      <DependentUpon>RoundButton.cs</DependentUpon>
-    </Compile>
     <Compile Include="User.cs" />
-    <Compile Include="WatermarkTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="WatermarkTextBox.Designer.cs">
-      <DependentUpon>WatermarkTextBox.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

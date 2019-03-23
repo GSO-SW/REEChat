@@ -32,7 +32,27 @@ namespace REEChatDLL
 		/// <param name="feedbackCode">Content of the feedback</param>
 		public Feedback(FeedbackCode feedbackCode)
 		{
+			Type = PackageType.Feedback;
 			FeedbackCode = feedbackCode;
+		}
+
+		/// <summary>
+		/// Converts a byte array to a Feedback Package and returns a value indicating whether the conversion was successful.
+		/// </summary>
+		/// <param name="data">Package byte array</param>
+		/// <param name="feedback">Output Feedback package</param>
+		/// <returns>Returns whether the conversion was successful.</returns>
+		public static bool TryParse(byte[] data, out Feedback feedback)
+		{
+			feedback = null;
+
+			if (!int.TryParse(Encoding.UTF8.GetString(data), out int id))
+				return false;
+			if (!Enum.IsDefined(typeof(FeedbackCode), id))
+				return false;
+
+			feedback = new Feedback((FeedbackCode)id);
+			return true;
 		}
 
 		/// <summary>
@@ -41,6 +61,6 @@ namespace REEChatDLL
 		public override byte[] UserData()
 		{
 			return Encoding.UTF8.GetBytes(((int)FeedbackCode).ToString());
-		}
+		}		
 	}
 }

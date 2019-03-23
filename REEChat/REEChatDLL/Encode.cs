@@ -9,6 +9,11 @@ namespace REEChatDLL
 {
 	public static class Encode
 	{
+		/// <summary>
+		/// Hashs a string (used for passwords)
+		/// </summary>
+		/// <param name="password">string to hash</param>
+		/// <returns>hashed string</returns>
 		public static string GetHash(string password)
 		{
 			byte[] bytes = Encoding.UTF8.GetBytes(password);
