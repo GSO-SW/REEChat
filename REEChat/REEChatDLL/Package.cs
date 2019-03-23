@@ -96,6 +96,8 @@ namespace REEChatDLL
 			switch (packageType)
 			{
 				case PackageType.RegistrationRequest:
+					if (RegistrationRequest.TryParse(userData, out RegistrationRequest request))
+						package = request;
 					break;
 				case PackageType.LoginRequest:
 					if(LoginRequest.TryParse(userData, out LoginRequest login))

@@ -82,20 +82,20 @@
 			// 
 			// buttonRegister
 			// 
-			this.buttonRegister.Enabled = false;
 			this.buttonRegister.Location = new System.Drawing.Point(132, 104);
 			this.buttonRegister.Name = "buttonRegister";
 			this.buttonRegister.Size = new System.Drawing.Size(75, 23);
 			this.buttonRegister.TabIndex = 5;
 			this.buttonRegister.Text = "Registrieren";
 			this.buttonRegister.UseVisualStyleBackColor = true;
+			this.buttonRegister.Click += new System.EventHandler(this.Register_Click);
 			// 
 			// timer
 			// 
 			this.timer.Interval = 1000;
 			this.timer.Tick += new System.EventHandler(this.Tick);
 			// 
-			// LoginView
+			// CLoginView
 			// 
 			this.AcceptButton = this.buttonConnect;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -106,7 +106,7 @@
 			this.Controls.Add(this.txtAddress);
 			this.Controls.Add(this.txtPassword);
 			this.Controls.Add(this.txtEmail);
-			this.Name = "LoginView";
+			this.Name = "CLoginView";
 			this.Text = "LoginView";
 			this.ResumeLayout(false);
 			this.PerformLayout();

@@ -15,10 +15,6 @@ namespace Client
 {
 	public partial class CMainView : Form
 	{
-		TcpClient client = null;
-
-		string serverAddress = ConfigurationManager.AppSettings["serverAddress"];
-
 		/// <summary>
 		/// Creates a new instance of type CMainView
 		/// </summary>
@@ -26,18 +22,7 @@ namespace Client
 		{
 			InitializeComponent();
 
-			CFormController.Main = this;
-		}
-
-		private void button1_Click(object sender, EventArgs e)
-		{
-			LoginRequest loginRequest = new LoginRequest(textBox1.Text, textBox2.Text);
-			byte[] buffer = loginRequest.ToByteArray();
-			client = new TcpClient(serverAddress, ConnectionConfig.serverPort);
-			NetworkStream stream = client.GetStream();
-			stream.Write(buffer, 0, buffer.Length);
-			stream.Close();
-			client.Close();
+			CFormController.MainView = this;
 		}
 	}
 }

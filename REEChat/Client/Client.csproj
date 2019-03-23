@@ -63,12 +63,21 @@
       <DependentUpon>CMainView.cs</DependentUpon>
     </Compile>
     <Compile Include="CProgram.cs" />
+    <Compile Include="CRegistrationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CRegistrationForm.Designer.cs">
+      <DependentUpon>CRegistrationForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="CLoginView.resx">
       <DependentUpon>CLoginView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CMainView.resx">
       <DependentUpon>CMainView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CRegistrationForm.resx">
+      <DependentUpon>CRegistrationForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
