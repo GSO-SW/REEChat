@@ -45,7 +45,7 @@ namespace Client
 			Listener = new TcpListener(IPAddress.Any, ConnectionConfig.clientPort);
 			try
 			{
-				Listener.Start();
+				Listener.Start(3);
 			}
 			catch (SocketException)
 			{
