@@ -22,7 +22,7 @@ namespace REEChatDLL
 			Birthday = birthday;
 		}
 
-		public static bool TryParse(byte[] data, out RegistrationRequest request)
+		internal static bool TryParse(byte[] data, out RegistrationRequest request)
 		{
 			request = null;
 			byte[] emailByte = null;

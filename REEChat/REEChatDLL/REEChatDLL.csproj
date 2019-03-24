@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UserList.cs" />
     <Compile Include="ConnectionConfig.cs" />
     <Compile Include="Converter.cs" />
     <Compile Include="Encode.cs" />

@@ -14,6 +14,7 @@ namespace REEChatDLL
 		public const byte StartOfHeader = 001;
 		public const byte StartOfText = 002;
 		public const byte EndOfText = 003;
+		public const byte GroupSeperator = 029;
 		public const byte UnitSeperator = 031;
 	}
 }

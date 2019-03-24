@@ -77,6 +77,23 @@ namespace REEChatDLL
 			return finalBytes;
 		}
 
+		public static bool TrySplitByte(byte[] input, byte seperator, bool keepSeperator,out byte[] output1, out byte[] output2)
+		{
+			output1 = null; output2 = null;
+
+			for (int i = 0; i < input.Length; i++)
+			{
+				if (input[i] == seperator)
+				{
+					output1 = input.Take(i + Convert.ToInt32(keepSeperator)).ToArray();
+					output2 = input.Skip(i + 1).ToArray(); 
+
+					return true;
+				}
+			}
+
+			return false;
+		}
 
 		/// <summary>
 		/// Converts a byte array to a Package and returns a code.
@@ -108,6 +125,8 @@ namespace REEChatDLL
 				case PackageType.Offline:
 					break;
 				case PackageType.UserList:
+					if (UserList.TryParse(userData, out UserList userList))
+						package = userList;
 					break;
 				case PackageType.UserAdd:
 					break;
