@@ -77,6 +77,15 @@ namespace REEChatDLL
 			return finalBytes;
 		}
 
+		/// <summary>
+		/// Tries to split a byte array
+		/// </summary>
+		/// <param name="input">input array</param>
+		/// <param name="seperator">split condition</param>
+		/// <param name="keepSeperator">keep split condition in output 1</param>
+		/// <param name="output1">first array</param>
+		/// <param name="output2">secound array</param>
+		/// <returns>Returns whether the split was successful.</returns>
 		public static bool TrySplitByte(byte[] input, byte seperator, bool keepSeperator,out byte[] output1, out byte[] output2)
 		{
 			output1 = null; output2 = null;

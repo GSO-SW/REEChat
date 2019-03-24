@@ -34,6 +34,9 @@ namespace Client
 				txtServerAddress.Text = address;
 		}
 
+		/// <summary>
+		/// State of wait for feedback
+		/// </summary>
 		internal bool WaitForFeedback
 		{
 			get { return waitForFeedback; }

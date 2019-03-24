@@ -16,12 +16,21 @@ namespace REEChatDLL
 			List = list;
 		}
 
+		/// <summary>
+		/// Creates a new instance of type UserList
+		/// </summary>
 		public UserList()
 		{
 			Type = PackageType.UserList;
 			List = new List<User>();
 		}
 
+		/// <summary>
+		/// Converts a byte array to a UserList Package and returns a value indicating whether the conversion was successful.
+		/// </summary>
+		/// <param name="data">input data to convert</param>
+		/// <param name="userList">output</param>
+		/// <returns>Returns whether the conversion was successful.</returns>
 		internal static bool TryParse(byte[] data, out UserList userList)
 		{
 			userList = null;

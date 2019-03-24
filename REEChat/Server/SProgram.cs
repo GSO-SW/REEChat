@@ -56,6 +56,10 @@ namespace Server
 			}
 		}
 
+		/// <summary>
+		/// Writes a line into the console
+		/// </summary>
+		/// <param name="text">text to write</param>
 		internal static void WriteLine(string text)
 		{
 			string time = "[" + DateTime.Now.ToString("HH':'mm':'ss") + "] ";
