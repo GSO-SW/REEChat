@@ -63,6 +63,11 @@ namespace REEChatDLL
 		public override byte[] UserData()
 		{
 			return Encoding.UTF8.GetBytes(((int)FeedbackCode).ToString());
-		}		
+		}
+
+		public override string ToString()
+		{
+			return FeedbackCode.ToString();
+		}
 	}
 }

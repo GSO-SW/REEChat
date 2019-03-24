@@ -86,5 +86,10 @@ namespace REEChatDLL
 
 			return userData;
 		}
+
+		public override string ToString()
+		{
+			return "Email: " + Email;
+		}
 	}
 }

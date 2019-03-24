@@ -24,18 +24,14 @@ namespace Server
 				case PackageType.RegistrationRequest:
 					RegistrationRequest request = (RegistrationRequest)package;
 					transmittedFeedback = RegistrationRequest(request, clientAddress);
-					SProgram.WriteLine("Ergebnis: " + transmittedFeedback.FeedbackCode.ToString());
 					break;
 				case PackageType.LoginRequest:
 					LoginRequest login = (LoginRequest)package;
 					transmittedFeedback = LoginRequest(login, clientAddress);
-					SProgram.WriteLine("Ergebnis: " + transmittedFeedback.FeedbackCode.ToString());
 					break;
 				case PackageType.Online:
 					break;
 				case PackageType.Offline:
-					break;
-				case PackageType.UserList:
 					break;
 				case PackageType.UserAdd:
 					break;
@@ -68,7 +64,7 @@ namespace Server
 			{
 				if (result)
 				{
-					if (SDBController.TryClientUpdateLastIPAddress(loginRequest.Email, clientAddress))
+					if (SDBController.TryUpdateClientLastIPAddress(loginRequest.Email, clientAddress))
 						feedback = new Feedback(FeedbackCode.LoginAccepted);
 					else
 						feedback = new Feedback(FeedbackCode.InternalServerError);
@@ -76,9 +72,21 @@ namespace Server
 				else
 					feedback = new Feedback(FeedbackCode.LoginDenied);
 			}
-			
-			SConnectionController.SendPackage(feedback, clientAddress);
 
+
+			if (feedback.FeedbackCode == FeedbackCode.LoginAccepted)
+			{
+				if (!SDBController.TryGetClientList(out List<User> userList))
+					feedback = new Feedback(FeedbackCode.InternalServerError);
+				else
+				{
+					UserList userListPackage = new UserList(userList);
+					SConnectionController.SendPackage(userListPackage, clientAddress);
+					return feedback;
+				}
+			}
+
+			SConnectionController.SendPackage(feedback, clientAddress);
 			return feedback;
 		}
 
@@ -96,7 +104,7 @@ namespace Server
 				feedback = new Feedback(FeedbackCode.RegistrationDenied);
 			else
 			{
-				switch (SDBController.TryClientAdd(request))
+				switch (SDBController.TryAddClient(request))
 				{
 					case 0:
 						feedback = new Feedback(FeedbackCode.RegistrationAccepted);

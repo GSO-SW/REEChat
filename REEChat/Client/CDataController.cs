@@ -10,6 +10,8 @@ namespace Client
 {
 	internal static class CDataController
 	{
+		public static List<User> Users { get; set; } = null;
+
 		/// <summary>
 		/// Processes a received package
 		/// </summary>
@@ -17,6 +19,10 @@ namespace Client
 		/// <param name="address">address of the sender of the package</param>
 		internal static void ProcessingReceivedPackage(Package package, string address)
 		{
+			//sender != server
+			if (CConnectionController.ServerAddress != address)
+				return;
+			//Not logged in
 			if (string.IsNullOrWhiteSpace(CFormController.RegisteredEmail))
 				switch (package.Type)
 				{
@@ -25,12 +31,18 @@ namespace Client
 					case PackageType.Offline:
 						break;
 					case PackageType.UserList:
+						CDataController.Users = ((UserList)package).List;
+						MessageBox.Show("Login erfolgreich!");
+						CFormController.Login();
 						break;
 					case PackageType.TextMessageReceive:
 						break;
 					case PackageType.Feedback:
 						Feedback feedback = (Feedback)package;
-						if (CFormController.LoginView.WaitForFeedback || CFormController.RegistrationView.WaitForFeedback)
+						bool check = false;
+						if (CFormController.RegistrationView != null)
+							check = CFormController.RegistrationView.WaitForFeedback;
+						if (CFormController.LoginView.WaitForFeedback || check)
 						{
 							switch (feedback.FeedbackCode)
 							{
@@ -39,10 +51,6 @@ namespace Client
 									break;
 								case FeedbackCode.LoginDenied:
 									MessageBox.Show("Login verweigert! Falsche Anmeldedaten!");
-									break;
-								case FeedbackCode.LoginAccepted:
-									MessageBox.Show("Login erfolgreich!");
-									CFormController.Login();
 									break;
 								case FeedbackCode.RegistrationDenied:
 									MessageBox.Show("Der Registrierungsanfrage wurde abgelehnt! \nWahrscheinlich wurden die Daten verändert!");
@@ -58,7 +66,6 @@ namespace Client
 						}
 						break;
 				}
-
 		}
 	}
 }

@@ -86,7 +86,7 @@ namespace Server
 		/// <param name="email">The email of the user</param>
 		/// <param name="address">The ip address of the user</param>
 		/// <returns>Returns false if there was a problem with the database connection, otherwise true.</returns>
-		internal static bool TryClientUpdateLastIPAddress(string email, string address)
+		internal static bool TryUpdateClientLastIPAddress(string email, string address)
 		{
 			using (MySqlConnection con = new MySqlConnection(connectionString))
 			{
@@ -124,7 +124,7 @@ namespace Server
 		/// </summary>
 		/// <param name="request"></param>
 		/// <returns>Returns false if there was a problem with the database connection, otherwise true.</returns>
-		internal static int TryClientAdd(RegistrationRequest request)
+		internal static int TryAddClient(RegistrationRequest request)
 		{
 			using (MySqlConnection con = new MySqlConnection(connectionString))
 			{
@@ -153,6 +153,63 @@ namespace Server
 				}
 				return 0;
 			}
+		}
+
+		/// <summary>
+		/// Tries to get a list of all users
+		/// </summary>
+		/// <param name="userList">output list</param>
+		/// <returns>Returns false if there was a problem with the database connection, otherwise true.</returns>
+		internal static bool TryGetClientList(out List<User> userList)
+		{
+			userList = null;
+			DataTable table = new DataTable();
+
+			using (MySqlConnection con = new MySqlConnection(connectionString))
+			{
+				try
+				{
+					con.Open();
+
+					using (MySqlDataAdapter a = new MySqlDataAdapter("SELECT Email, Nickname, Birthday FROM `user`", con))
+					{
+						a.Fill(table);
+					}
+				}
+				catch (Exception)
+				{
+					return false;
+				}
+				finally
+				{
+					con.Close();
+				}
+			}
+
+			List<User> userListTemp = new List<User>();
+
+			foreach (DataRow row in table.Rows)
+			{
+				if (!TryGetUserFromDataRow(row, out User user))
+					return false;
+				userListTemp.Add(user);
+			}
+			userList = userListTemp;
+			return true;
+		}
+
+		private static bool TryGetUserFromDataRow(DataRow row, out User user)
+		{
+			user = null;
+			try
+			{
+				user = new User(row.Field<string>("Email"), row.Field<string>("Nickname"), row.Field<DateTime>("Birthday"));
+			}
+			catch (Exception)
+			{
+				return false;
+			}
+			return true;
 		}
 	}
 }

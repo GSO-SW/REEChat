@@ -47,7 +47,7 @@ namespace REEChatDLL
 
 		public static bool TryParse(byte[] data, out User user)
 		{
-	 		user = null;
+			user = null;
 
 			if (data == null)
 				return false;
@@ -93,6 +93,11 @@ namespace REEChatDLL
 			byteList.Add(PackageControl.GroupSeperator);
 
 			return byteList.ToArray();
+		}
+
+		public override string ToString()
+		{
+			return "[Email]: " + Email + " [Nickname]: " + Nickname + " [Birthday]: " + Birthday.ToShortDateString();
 		}
 	}
 }
