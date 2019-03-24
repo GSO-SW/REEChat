@@ -44,7 +44,7 @@ namespace REEChatDLL
 		/// <param name="data">Package byte array</param>
 		/// <param name="feedback">Output Feedback package</param>
 		/// <returns>Returns whether the conversion was successful.</returns>
-		public static bool TryParse(byte[] data, out Feedback feedback)
+		internal static bool TryParse(byte[] data, out Feedback feedback)
 		{
 			feedback = null;
 
@@ -63,6 +63,11 @@ namespace REEChatDLL
 		public override byte[] UserData()
 		{
 			return Encoding.UTF8.GetBytes(((int)FeedbackCode).ToString());
-		}		
+		}
+
+		public override string ToString()
+		{
+			return FeedbackCode.ToString();
+		}
 	}
 }

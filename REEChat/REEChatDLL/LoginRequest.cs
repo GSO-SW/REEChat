@@ -35,7 +35,7 @@ namespace REEChatDLL
 		/// <param name="data">Package byte array</param>
 		/// <param name="loginRequest">Output LoginRequest package</param>
 		/// <returns>Returns whether the conversion was successful.</returns>
-		public static bool TryParse(byte[] data, out LoginRequest loginRequest)
+		internal static bool TryParse(byte[] data, out LoginRequest loginRequest)
 		{
 			loginRequest = null;
 
@@ -85,6 +85,11 @@ namespace REEChatDLL
 
 
 			return userData;
+		}
+
+		public override string ToString()
+		{
+			return "Email: " + Email;
 		}
 	}
 }

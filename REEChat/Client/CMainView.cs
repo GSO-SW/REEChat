@@ -13,7 +13,7 @@ using System.Threading;
 using System.Windows.Forms;
 namespace Client
 {
-	public partial class CMainView : Form
+	internal partial class CMainView : Form
 	{
 		/// <summary>
 		/// Creates a new instance of type CMainView
@@ -23,6 +23,20 @@ namespace Client
 			InitializeComponent();
 
 			CFormController.MainView = this;
+
+			UpdateListBox();
+		}
+
+		public void UpdateListBox()
+		{
+			userListbox.DisplayMember = "Nickname";
+			userListbox.Items.Clear();
+			userListbox.Items.AddRange(CDataController.Users.ToArray());
+		}
+
+		private void UserSelectedIndexChanged(object sender, EventArgs e)
+		{
+
 		}
 	}
 }

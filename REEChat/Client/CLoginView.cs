@@ -34,6 +34,9 @@ namespace Client
 			txtAddress.Text = ConfigurationManager.AppSettings["serverAddress"];
 		}
 		
+		/// <summary>
+		/// State of wait for feedback
+		/// </summary>
 		public bool WaitForFeedback
 		{
 			get { return waitForFeedback; }

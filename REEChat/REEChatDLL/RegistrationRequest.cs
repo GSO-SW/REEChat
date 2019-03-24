@@ -13,6 +13,13 @@ namespace REEChatDLL
 		public string PasswordHash { get; set; }
 		public DateTime Birthday { get; set; }
 
+		/// <summary>
+		/// Creates a new instance from type RegistrationRequest
+		/// </summary>
+		/// <param name="email">email from the user</param>
+		/// <param name="nickname">nickname from the user</param>
+		/// <param name="passwordHash">passwordhash from the user</param>
+		/// <param name="birthday">birthday from the user</param>
 		public RegistrationRequest(string email, string nickname, string passwordHash, DateTime birthday)
 		{
 			Type = PackageType.RegistrationRequest;
@@ -22,7 +29,13 @@ namespace REEChatDLL
 			Birthday = birthday;
 		}
 
-		public static bool TryParse(byte[] data, out RegistrationRequest request)
+		/// <summary>
+		/// Converts a byte array to a RegistrationRequest Package and returns a value indicating whether the conversion was successful.
+		/// </summary>
+		/// <param name="data">input data to convert</param>
+		/// <param name="request">output</param>
+		/// <returns>Returns whether the conversion was successful.</returns>
+		internal static bool TryParse(byte[] data, out RegistrationRequest request)
 		{
 			request = null;
 			byte[] emailByte = null;
@@ -112,6 +125,11 @@ namespace REEChatDLL
 
 
 			return userData;
+		}
+
+		public override string ToString()
+		{
+			return Email + "; " + Nickname + "; " + PasswordHash + "; ";
 		}
 	}
 }

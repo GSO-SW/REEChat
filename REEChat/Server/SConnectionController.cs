@@ -60,29 +60,15 @@ namespace Server
 					switch (Package.TryParse(buffer, out Package package))
 					{
 						case 0:
-							SProgram.WriteLine("Erfolgreich Paket von [" + clientAddress + "] empfangen!");
+							SProgram.WritePackageReceiveInfo(package, clientAddress);
 							SDataController.ProcessingReceivedPackage(package, clientAddress);
 							break;
 						case 1:
-							SProgram.WriteLine("Fehlerhaftes Paket von [" + clientAddress + "] empfangen!");
-							SProgram.WriteLine("Grund: Strukturfehler!");
-
-							for (int i = 0; i < buffer.Length; i++)
-							{
-								SProgram.WriteLine(i.ToString() + ": " + buffer[i].ToString());
-							}
-
+							SProgram.WritePackageSendFailInfo(buffer, clientAddress);
 							ReceivedIncorrectPackage(clientAddress);
 							break;
 						case 2:
-							SProgram.WriteLine("Fehlerhaftes Paket von [" + clientAddress + "] empfangen!");
-							SProgram.WriteLine("Grund: Umwandlungsfehler!");
-
-							for (int i = 0; i < buffer.Length; i++)
-							{
-								SProgram.WriteLine(i.ToString() + ": " + buffer[i].ToString());
-							}
-
+							SProgram.WritePackageSendFailInfo(buffer, clientAddress);
 							ReceivedIncorrectPackage(clientAddress);
 							break;
 					}
@@ -101,6 +87,7 @@ namespace Server
 		/// <param name="clientAddress">destination address of the package</param>
 		internal static void SendPackage(Package package, string clientAddress)
 		{
+			SProgram.WritePackageSendInfo(package, clientAddress);
 			TcpClient client = null;
 			byte[] buffer = package.ToByteArray();
 			client = new TcpClient(clientAddress, ConnectionConfig.clientPort);

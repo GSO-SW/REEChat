@@ -8,6 +8,11 @@ namespace REEChatDLL
 {
 	public static class DateConverter
 	{
+		/// <summary>
+		/// Convents the date of birth into an age.
+		/// </summary>
+		/// <param name="birthday">day of birth</param>
+		/// <returns>age</returns>
 		public static int GetAgeFromDate(DateTime birthday)
 		{
 			int years = DateTime.Now.Year - birthday.Year;
