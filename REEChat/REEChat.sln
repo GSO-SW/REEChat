@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REEChatDLL", "REEChatDLL\REEChatDLL.csproj", "{21D9C94D-2403-45CB-97C4-1E12ED0A423E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomControl", "..\..\..\School\Carsharing\CustomControl\CustomControl.csproj", "{B9D79AF0-D8FA-4473-859C-81F90213643E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomControl", "CustomControl\CustomControl.csproj", "{B9D79AF0-D8FA-4473-859C-81F90213643E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
