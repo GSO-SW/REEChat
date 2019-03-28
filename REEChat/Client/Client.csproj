@@ -102,7 +102,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\School\Carsharing\CustomControl\CustomControl.csproj">
+    <ProjectReference Include="..\CustomControl\CustomControl.csproj">
       <Project>{b9d79af0-d8fa-4473-859c-81f90213643e}</Project>
       <Name>CustomControl</Name>
     </ProjectReference>
