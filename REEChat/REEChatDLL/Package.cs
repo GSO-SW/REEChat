@@ -86,7 +86,7 @@ namespace REEChatDLL
 		/// <param name="output1">first array</param>
 		/// <param name="output2">secound array</param>
 		/// <returns>Returns whether the split was successful.</returns>
-		public static bool TrySplitByte(byte[] input, byte seperator, bool keepSeperator,out byte[] output1, out byte[] output2)
+		public static bool TrySplitByte(byte[] input, byte seperator, bool keepSeperator, out byte[] output1, out byte[] output2)
 		{
 			output1 = null; output2 = null;
 
@@ -142,6 +142,8 @@ namespace REEChatDLL
 				case PackageType.UserRemove:
 					break;
 				case PackageType.TextMessageSend:
+                    if (SendTextMessage.TryParse(userData, out SendTextMessage sendTextMessage))
+                        package = sendTextMessage;
 					break;
 				case PackageType.TextMessageReceive:
 					break;
