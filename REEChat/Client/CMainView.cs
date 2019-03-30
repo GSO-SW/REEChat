@@ -24,6 +24,7 @@ namespace Client
 
 			CFormController.MainView = this;
 
+            listMessange.DisplayMember = "DisplayMember";
 			UpdateListBox();
 		}
 
@@ -38,5 +39,26 @@ namespace Client
 		{
 
 		}
-	}
+
+        private void Send_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtMessage.Text))
+                return;
+
+            if(userListbox.SelectedItem != null)
+                if (userListbox.SelectedItem is User receiver)
+                {
+                    SendTextMessage sendTextMessage = new SendTextMessage(receiver.Email, txtMessage.Text);
+                    if (CConnectionController.TrySendPackage(sendTextMessage, CConnectionController.ServerAddress))
+                    {
+                        Message message = new Message(CConnectionController.LoginUser, receiver, DateTime.Now, txtMessage.Text);
+                        txtMessage.Text = "";
+                    }
+                    else
+                    {
+                        MessageBox.Show("Fehler beim Senden!");
+                    }
+                }
+        }
+    }
 }

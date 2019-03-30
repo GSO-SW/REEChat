@@ -28,82 +28,88 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.userListbox = new System.Windows.Forms.ListBox();
-			this.listBox1 = new System.Windows.Forms.ListBox();
-			this.textBox1 = new System.Windows.Forms.TextBox();
-			this.button1 = new System.Windows.Forms.Button();
-			this.SuspendLayout();
-			// 
-			// userListbox
-			// 
-			this.userListbox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.userListbox.Dock = System.Windows.Forms.DockStyle.Left;
-			this.userListbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.userListbox.FormattingEnabled = true;
-			this.userListbox.ItemHeight = 20;
-			this.userListbox.Location = new System.Drawing.Point(0, 0);
-			this.userListbox.Name = "userListbox";
-			this.userListbox.Size = new System.Drawing.Size(238, 550);
-			this.userListbox.TabIndex = 0;
-			this.userListbox.SelectedIndexChanged += new System.EventHandler(this.UserSelectedIndexChanged);
-			// 
-			// listBox1
-			// 
-			this.listBox1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.listBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.listBox1.FormattingEnabled = true;
-			this.listBox1.ItemHeight = 20;
-			this.listBox1.Location = new System.Drawing.Point(238, 0);
-			this.listBox1.Name = "listBox1";
-			this.listBox1.Size = new System.Drawing.Size(694, 524);
-			this.listBox1.TabIndex = 1;
-			// 
-			// textBox1
-			// 
-			this.textBox1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.textBox1.Location = new System.Drawing.Point(238, 524);
-			this.textBox1.Name = "textBox1";
-			this.textBox1.Size = new System.Drawing.Size(599, 26);
-			this.textBox1.TabIndex = 2;
-			// 
-			// button1
-			// 
-			this.button1.Dock = System.Windows.Forms.DockStyle.Right;
-			this.button1.Location = new System.Drawing.Point(837, 524);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(95, 26);
-			this.button1.TabIndex = 3;
-			this.button1.Text = "button1";
-			this.button1.UseVisualStyleBackColor = true;
-			// 
-			// CMainView
-			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.BackColor = System.Drawing.SystemColors.Window;
-			this.ClientSize = new System.Drawing.Size(932, 550);
-			this.Controls.Add(this.textBox1);
-			this.Controls.Add(this.button1);
-			this.Controls.Add(this.listBox1);
-			this.Controls.Add(this.userListbox);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-			this.MaximizeBox = false;
-			this.MinimizeBox = false;
-			this.Name = "CMainView";
-			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-			this.Text = "REEChat";
-			this.ResumeLayout(false);
-			this.PerformLayout();
+            this.userListbox = new System.Windows.Forms.ListBox();
+            this.listMessange = new System.Windows.Forms.ListBox();
+            this.txtMessage = new System.Windows.Forms.TextBox();
+            this.buttonSend = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+            // 
+            // userListbox
+            // 
+            this.userListbox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.userListbox.Dock = System.Windows.Forms.DockStyle.Left;
+            this.userListbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.userListbox.FormattingEnabled = true;
+            this.userListbox.ItemHeight = 25;
+            this.userListbox.Location = new System.Drawing.Point(0, 0);
+            this.userListbox.Margin = new System.Windows.Forms.Padding(4);
+            this.userListbox.Name = "userListbox";
+            this.userListbox.Size = new System.Drawing.Size(317, 677);
+            this.userListbox.TabIndex = 0;
+            this.userListbox.SelectedIndexChanged += new System.EventHandler(this.UserSelectedIndexChanged);
+            // 
+            // listMessange
+            // 
+            this.listMessange.Dock = System.Windows.Forms.DockStyle.Top;
+            this.listMessange.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listMessange.FormattingEnabled = true;
+            this.listMessange.ItemHeight = 25;
+            this.listMessange.Location = new System.Drawing.Point(317, 0);
+            this.listMessange.Margin = new System.Windows.Forms.Padding(4);
+            this.listMessange.Name = "listMessange";
+            this.listMessange.Size = new System.Drawing.Size(926, 629);
+            this.listMessange.TabIndex = 1;
+            // 
+            // txtMessage
+            // 
+            this.txtMessage.Dock = System.Windows.Forms.DockStyle.Top;
+            this.txtMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtMessage.Location = new System.Drawing.Point(317, 629);
+            this.txtMessage.Margin = new System.Windows.Forms.Padding(4);
+            this.txtMessage.Name = "txtMessage";
+            this.txtMessage.Size = new System.Drawing.Size(799, 30);
+            this.txtMessage.TabIndex = 2;
+            // 
+            // buttonSend
+            // 
+            this.buttonSend.Dock = System.Windows.Forms.DockStyle.Right;
+            this.buttonSend.Location = new System.Drawing.Point(1116, 629);
+            this.buttonSend.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonSend.Name = "buttonSend";
+            this.buttonSend.Size = new System.Drawing.Size(127, 48);
+            this.buttonSend.TabIndex = 3;
+            this.buttonSend.Text = "Send";
+            this.buttonSend.UseVisualStyleBackColor = true;
+            this.buttonSend.Click += new System.EventHandler(this.Send_Click);
+            // 
+            // CMainView
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Window;
+            this.ClientSize = new System.Drawing.Size(1243, 677);
+            this.Controls.Add(this.txtMessage);
+            this.Controls.Add(this.buttonSend);
+            this.Controls.Add(this.listMessange);
+            this.Controls.Add(this.userListbox);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(4);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "CMainView";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.Text = "REEChat";
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 
 		#endregion
 
 		private System.Windows.Forms.ListBox userListbox;
-		private System.Windows.Forms.ListBox listBox1;
-		private System.Windows.Forms.TextBox textBox1;
-		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.ListBox listMessange;
+		private System.Windows.Forms.TextBox txtMessage;
+		private System.Windows.Forms.Button buttonSend;
 	}
 }
 

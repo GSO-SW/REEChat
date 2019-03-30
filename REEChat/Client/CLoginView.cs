@@ -79,6 +79,7 @@ namespace Client
 
 
 				LoginRequest login = new LoginRequest(email, Encode.GetHash(password));
+                CConnectionController.LoginUser = new User(login.Email, login.PasswordHash);
 
 				if (!CConnectionController.TrySendPackage(login, CConnectionController.ServerAddress))
 				{

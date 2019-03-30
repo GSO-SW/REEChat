@@ -16,11 +16,12 @@ namespace Client
 		internal static string ServerAddress { get; set; }
 		internal static Thread ThreadListener { get; set; }
 		internal static TcpListener Listener { get; set; }
+        internal static User LoginUser { get; set; }
 
-		/// <summary>
-		/// Starts the listener
-		/// </summary>
-		internal static void Start()
+        /// <summary>
+        /// Starts the listener
+        /// </summary>
+        internal static void Start()
 		{
 			Running = true;
 			ThreadListener = new Thread(Listen);

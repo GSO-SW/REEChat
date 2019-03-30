@@ -31,7 +31,7 @@ namespace Client
 					case PackageType.Offline:
 						break;
 					case PackageType.UserList:
-						CDataController.Users = ((UserList)package).List;
+						Users = ((UserList)package).List;
 						MessageBox.Show("Login erfolgreich!");
 						CFormController.Login();
 						break;
