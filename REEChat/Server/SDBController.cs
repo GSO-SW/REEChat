@@ -211,5 +211,164 @@ namespace Server
 			}
 			return true;
 		}
+
+		/// <summary>
+		/// Tries to get a user by his ipaddress
+		/// </summary>
+		/// <param name="ipaddress">ipaddress of the user</param>
+		/// <param name="user">out user</param>
+		/// <returns>Returns false if there was a problem with the database connection, otherwise true.</returns>
+		internal static bool TryGetUser(string ipaddress, out User user)
+		{
+			user = null;
+			DataTable table = new DataTable();
+
+			using (MySqlConnection con = new MySqlConnection(connectionString))
+			{
+				try
+				{
+					con.Open();
+
+					using (MySqlDataAdapter a = new MySqlDataAdapter("SELECT Email, Nickname, Birthday FROM `user` WHERE `LastIPAddress` = @LastIPAddress", con))
+					{
+						a.SelectCommand.Parameters.AddWithValue("@LastIPAddress", ipaddress);
+
+						a.Fill(table);
+					}
+				}
+				catch (Exception)
+				{
+					return false;
+				}
+				finally
+				{
+					con.Close();
+				}
+			}
+
+			if (!TryGetUserFromDataRow(table.Rows[0], out User tUser))
+				return false;
+
+			user = tUser;
+			return true;
+		}
+
+		/// <summary>
+		/// Tries to add a message to DB
+		/// </summary>
+		/// <param name="senderEmail">email of the sender</param>
+		/// <param name="receiverEmail">email of the receiver</param>
+		/// <param name="text">text of the message</param>
+		/// <param name="sendTime">send time of the message</param>
+		/// <returns>Returns false if there was a problem with the database connection, otherwise true.</returns>
+		internal static bool TryAddMessage(string senderEmail, string receiverEmail, string text, DateTime? sendTime)
+		{
+			if (!TryGetUserID(senderEmail, out int senderID))
+				return false;
+			if (!TryGetUserID(receiverEmail, out int receiverID))
+				return false;
+
+			using (MySqlConnection con = new MySqlConnection(connectionString))
+			{
+				try
+				{
+					con.Open();
+					using (MySqlCommand command = new MySqlCommand("INSERT INTO `message` (`Sender_ID`, `Receiver_ID`, `Text`, `Send_Time`) VALUES (@Sender, @Receiver, @Text, @Send_Time);", con))
+					{
+						command.Parameters.AddWithValue("Sender", senderID);
+						command.Parameters.AddWithValue("Receiver", receiverEmail);
+						command.Parameters.AddWithValue("Text", text);
+
+						if (sendTime == null)
+							command.Parameters.AddWithValue("Send_Time", null);
+						else
+							command.Parameters.AddWithValue("Send_Time", sendTime.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+
+						command.ExecuteNonQuery();
+					}
+				}
+				catch (Exception)
+				{
+					return false;
+				}
+				finally
+				{
+					con.Close();
+				}
+				return true;
+			}
+		}
+
+		/// <summary>
+		/// Tries to get the id of a user
+		/// </summary>
+		/// <param name="email">email of the user</param>
+		/// <param name="id">out id</param>
+		/// <returns>Returns false if there was a problem with the database connection, otherwise true.</returns>
+		internal static bool TryGetUserID(string email, out int id)
+		{
+			id = 0;
+			DataTable table = new DataTable();
+
+			using (MySqlConnection con = new MySqlConnection(connectionString))
+			{
+				try
+				{
+					con.Open();
+
+					using (MySqlDataAdapter a = new MySqlDataAdapter("SELECT U_ID FROM `user` WHERE `Email` = @email", con))
+					{
+						a.SelectCommand.Parameters.AddWithValue("@email", email);
+
+						a.Fill(table);
+					}
+				}
+				catch (Exception)
+				{
+					return false;
+				}
+				finally
+				{
+					con.Close();
+				}
+			}
+
+			if (table.Rows != null)
+				id = table.Rows[0].Field<int>("U_ID");
+			return true;
+		}
+
+		internal static bool TryGetIPAddressByEmail(string email, out string ipAddress)
+		{
+			ipAddress = null;
+			DataTable table = new DataTable();
+
+			using (MySqlConnection con = new MySqlConnection(connectionString))
+			{
+				try
+				{
+					con.Open();
+
+					using (MySqlDataAdapter a = new MySqlDataAdapter("SELECT LastIPAddress FROM `user` WHERE `Email` = @email", con))
+					{
+						a.SelectCommand.Parameters.AddWithValue("@email", email);
+
+						a.Fill(table);
+					}
+				}
+				catch (Exception)
+				{
+					return false;
+				}
+				finally
+				{
+					con.Close();
+				}
+			}
+
+			if (table.Rows != null)
+				ipAddress = table.Rows[0].Field<string>("LastIPAddress");
+			return true;
+		}
 	}
 }

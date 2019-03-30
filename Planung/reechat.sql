@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 23. Mrz 2019 um 15:57
+-- Erstellungszeit: 31. Mrz 2019 um 00:22
 -- Server-Version: 10.1.36-MariaDB
 -- PHP-Version: 7.2.10
 
@@ -32,9 +32,8 @@ CREATE TABLE `message` (
   `M_ID` int(9) NOT NULL,
   `Sender_ID` int(9) NOT NULL,
   `Receiver_ID` int(9) NOT NULL,
-  `Text` varchar(4000) NOT NULL,
-  `Send_Time` datetime DEFAULT NULL,
-  `Receive_Time` datetime DEFAULT NULL
+  `Text` text NOT NULL,
+  `Send_Time` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -47,7 +46,7 @@ CREATE TABLE `user` (
   `U_ID` int(9) NOT NULL,
   `Nickname` varchar(16) NOT NULL,
   `Email` varchar(50) NOT NULL,
-  `Password` varchar(100) NOT NULL,
+  `Password` char(64) NOT NULL,
   `Birthday` date NOT NULL,
   `LastIPAddress` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -57,7 +56,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`U_ID`, `Nickname`, `Email`, `Password`, `Birthday`, `LastIPAddress`) VALUES
-(1, 'replayme', 'replayme87@gmail.com', 'ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f', '2000-01-01', '192.168.178.2');
+(1, 'Replayme', 'replayme87@gmail.com', 'd82a2e2c3fc4ea05e75597d5a7be337fc4e3a493c51e14111359e44f7389d960', '1998-10-26', '192.168.178.2');
 
 --
 -- Indizes der exportierten Tabellen
@@ -94,7 +93,7 @@ ALTER TABLE `message`
 -- AUTO_INCREMENT für Tabelle `user`
 --
 ALTER TABLE `user`
-  MODIFY `U_ID` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `U_ID` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints der exportierten Tabellen

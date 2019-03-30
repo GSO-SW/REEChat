@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ReveiceTextMessage.cs" />
     <Compile Include="SendTextMessage.cs" />
     <Compile Include="UserList.cs" />
     <Compile Include="ConnectionConfig.cs" />

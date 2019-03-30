@@ -85,16 +85,25 @@ namespace Server
 		/// </summary>
 		/// <param name="package">package to send</param>
 		/// <param name="clientAddress">destination address of the package</param>
-		internal static void SendPackage(Package package, string clientAddress)
+		internal static bool SendPackage(Package package, string clientAddress)
 		{
 			SProgram.WritePackageSendInfo(package, clientAddress);
 			TcpClient client = null;
 			byte[] buffer = package.ToByteArray();
-			client = new TcpClient(clientAddress, ConnectionConfig.clientPort);
-			NetworkStream stream = client.GetStream();
-			stream.Write(buffer, 0, buffer.Length);
-			stream.Close();
-			client.Close();
+		
+			try
+			{
+				client = new TcpClient(clientAddress, ConnectionConfig.clientPort);
+				NetworkStream stream = client.GetStream();
+				stream.Write(buffer, 0, buffer.Length);
+				stream.Close();
+				client.Close();
+			}
+			catch (Exception)
+			{
+				return false;
+			}
+			return true;
 		}
 
 		/// <summary>

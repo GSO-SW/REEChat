@@ -39,13 +39,11 @@ namespace REEChatDLL
         public static bool TryParse(byte[] data, out SendTextMessage sendTextMessage)
         {
             sendTextMessage = null;
-            byte[] emailByte;
-            byte[] textByte;
 
-            if (!TrySplitByte(data, PackageControl.UnitSeperator, false, out emailByte, out textByte))
-                return false;
+			if (!TrySplitByte(data, PackageControl.UnitSeperator, false, out byte[] emailByte, out byte[] textByte))
+				return false;
 
-            if (emailByte.Length == 0 || textByte.Length == 0)
+			if (emailByte.Length == 0 || textByte.Length == 0)
                 return false;
 
             string email = Encoding.UTF8.GetString(emailByte);
