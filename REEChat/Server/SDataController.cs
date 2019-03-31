@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace Server
 {
@@ -18,28 +18,16 @@ namespace Server
 		/// <param name="clientAddress">address of the sender of the package</param>
 		internal static void ProcessingReceivedPackage(Package package, string clientAddress)
 		{
-			Feedback transmittedFeedback;
 			switch (package.Type)
 			{
 				case PackageType.RegistrationRequest:
-					RegistrationRequest request = (RegistrationRequest)package;
-					transmittedFeedback = RegistrationRequest(request, clientAddress);
+					HandlePackage((RegistrationRequest)package, clientAddress);
 					break;
 				case PackageType.LoginRequest:
-					LoginRequest login = (LoginRequest)package;
-					transmittedFeedback = LoginRequest(login, clientAddress);
-					break;
-				case PackageType.Online:
-					break;
-				case PackageType.Offline:
-					break;
-				case PackageType.UserAdd:
-					break;
-				case PackageType.UserRemove:
+					HandlePackage((LoginRequest)package, clientAddress);
 					break;
 				case PackageType.TextMessageSend:
-					break;
-				case PackageType.TextMessageReceive:
+					HandlePackage((SendTextMessage)package, clientAddress);
 					break;
 				case PackageType.Ping:
 					break;
@@ -54,7 +42,7 @@ namespace Server
 		/// <param name="loginRequest">LoginRequest to handle</param>
 		/// <param name="clientAddress">address of the sender of the package</param>
 		/// <returns>the feedback transmitted</returns>
-		internal static Feedback LoginRequest(LoginRequest loginRequest, string clientAddress)
+		private static void HandlePackage(LoginRequest loginRequest, string clientAddress)
 		{
 			Feedback feedback = null;
 
@@ -80,14 +68,26 @@ namespace Server
 					feedback = new Feedback(FeedbackCode.InternalServerError);
 				else
 				{
-					UserList userListPackage = new UserList(userList);
-					SConnectionController.SendPackage(userListPackage, clientAddress);
-					return feedback;
+					if(!SDBController.TryGetMessageList(loginRequest.Email, out List<MessagePackage> list))
+					{
+						feedback = new Feedback(FeedbackCode.InternalServerError);
+					}
+					else
+					{
+						UserList userListPackage = new UserList(userList);
+						SConnectionController.SendPackage(userListPackage, clientAddress);
+
+						MessageList messageList = new MessageList(list);
+						SConnectionController.SendPackage(messageList, clientAddress);
+
+						SDBController.TryUpdateSendTime(loginRequest.Email);
+
+						return;
+					}					
 				}
 			}
 
 			SConnectionController.SendPackage(feedback, clientAddress);
-			return feedback;
 		}
 
 		/// <summary>
@@ -96,7 +96,7 @@ namespace Server
 		/// <param name="request">RegistrationRequest to handle</param>
 		/// <param name="clientAddress">address of the sender of the package</param>
 		/// <returns>the feedback transmitted</returns>
-		private static Feedback RegistrationRequest(RegistrationRequest request, string clientAddress)
+		private static void HandlePackage(RegistrationRequest request, string clientAddress)
 		{
 			Feedback feedback = null;
 
@@ -119,8 +119,6 @@ namespace Server
 			}
 
 			SConnectionController.SendPackage(feedback, clientAddress);
-
-			return feedback;
 		}
 
 		/// <summary>
@@ -153,6 +151,51 @@ namespace Server
 				return false;
 
 			return true;
+		}
+
+		private static void HandlePackage(SendTextMessage sendTextMessage, string clientAddress)
+		{
+			DateTime? sendTime;
+			if (!SDBController.ConnectionAvailable())
+			{
+				SConnectionController.SendPackage(new Feedback(FeedbackCode.MessageSendFailed), clientAddress);
+				return;
+			}
+			if (!SDBController.TryGetUser(clientAddress, out User user))
+			{
+				SConnectionController.SendPackage(new Feedback(FeedbackCode.InvalidSession), clientAddress);
+				return;
+			}
+			if (!SDBController.TryGetIPAddressByEmail(sendTextMessage.EMail, out string ipAddress))
+			{
+				sendTime = null;
+			}
+			else
+			{
+				if (string.IsNullOrEmpty(ipAddress))
+				{
+					sendTime = null;
+				}
+				else
+				{
+					if (SConnectionController.SendPackage(new ReceiveTextMessage(sendTextMessage.EMail, sendTextMessage.Text), ipAddress))
+					{
+						sendTime = DateTime.Now;
+					}
+					else
+					{
+						sendTime = null;
+					}
+				}			
+			}
+			if(SDBController.TryAddMessage(user.Email, sendTextMessage.EMail, sendTextMessage.Text, sendTime))
+			{
+				SConnectionController.SendPackage(new Feedback(FeedbackCode.MessageSendSuccess), clientAddress);
+			}
+			else
+			{
+				SConnectionController.SendPackage(new Feedback(FeedbackCode.MessageSendFailed), clientAddress);
+			}
 		}
 	}
 }

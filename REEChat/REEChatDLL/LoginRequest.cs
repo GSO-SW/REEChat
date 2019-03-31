@@ -89,7 +89,7 @@ namespace REEChatDLL
 
 		public override string ToString()
 		{
-			return "Email: " + Email;
+			return "[Email]: " + Email;
 		}
 	}
 }

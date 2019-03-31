@@ -19,6 +19,9 @@ namespace REEChatDLL
 		RegistrationDenied = 20,
 		RegistrationDeniedEmailAlreadyUsed = 21,
 		RegistrationAccepted = 22,
+		InvalidSession = 30,
+		MessageSendSuccess = 40,
+		MessageSendFailed = 41,
 	}
 
 	public class Feedback : Package

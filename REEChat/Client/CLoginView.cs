@@ -18,7 +18,7 @@ namespace Client
 	{
 		internal int Counter { get; set; }
 
-		private bool waitForFeedback;
+		private bool waitForFeedback = false;
 
 		/// <summary>
 		/// Creates a new instance of type CLoginView
@@ -27,10 +27,10 @@ namespace Client
 		{
 			InitializeComponent();
 
-			WaitForFeedback = false;
 			CFormController.LoginView = this;
 
 			ActiveControl = buttonConnect;
+
 			txtAddress.Text = ConfigurationManager.AppSettings["serverAddress"];
 		}
 		
@@ -55,8 +55,6 @@ namespace Client
 		{
 			if (!WaitForFeedback)
 			{
-				WaitForFeedback = true;
-
 				string address = txtAddress.TextWithoutWatermark;
 				string email = txtEmail.TextWithoutWatermark;
 				string password = txtPassword.TextWithoutWatermark;
@@ -64,14 +62,12 @@ namespace Client
 				if (!IPAddress.TryParse(address, out IPAddress ipAddress))
 				{
 					MessageBox.Show("Ungültige IP Addresse.");
-					WaitForFeedback = false;
 					return;
 				}
 
 				if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
 				{
 					MessageBox.Show("Email und Passwort müssen ausgefühlt sein!");
-					WaitForFeedback = false;
 					return;
 				}
 
@@ -80,12 +76,14 @@ namespace Client
 
 				LoginRequest login = new LoginRequest(email, Encode.GetHash(password));
 
+                CConnectionController.LoginUser = new User(login.Email, login.PasswordHash);
+
 				if (!CConnectionController.TrySendPackage(login, CConnectionController.ServerAddress))
 				{
-					WaitForFeedback = false;
 					return;
 				}
 
+				WaitForFeedback = true;
 				timer.Enabled = true;
 			}
 		}
@@ -93,24 +91,26 @@ namespace Client
 		private void Tick(object sender, EventArgs e)
 		{
 			Counter++;
-			if (WaitForFeedback)
+
+			if (!WaitForFeedback)
 			{
+				WaitForFeedback = false;
 				timer.Enabled = false;
 				Counter = 0;
-				WaitForFeedback = false;
 			}
-			if(Counter > 5)
+
+			if (Counter > 5)
 			{
+				WaitForFeedback = false;
 				timer.Enabled = false;
 				Counter = 0;
 				MessageBox.Show("Keine Antwort vom Server erhalten!");
-				WaitForFeedback = false;
 			}
 		}
 
 		private void Register_Click(object sender, EventArgs e)
 		{
-			new CRegistrationForm(txtAddress.TextWithoutWatermark).ShowDialog();
+			new CRegistrationView(txtAddress.TextWithoutWatermark).ShowDialog();
 		}
 	}
 }

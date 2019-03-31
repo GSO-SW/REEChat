@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace Client
 {
-	public partial class CRegistrationForm : Form
+	public partial class CRegistrationView : Form
 	{
 		private int Counter { get; set; }
 
@@ -22,7 +22,7 @@ namespace Client
 		/// Creates a new instance of type CRegistrationForm
 		/// </summary>
 		/// <param name="address"></param>
-		internal CRegistrationForm(string address)
+		internal CRegistrationView(string address)
 		{
 			InitializeComponent();
 
