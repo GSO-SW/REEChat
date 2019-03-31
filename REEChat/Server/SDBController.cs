@@ -491,5 +491,53 @@ namespace Server
 				return true;
 			}
 		}
+
+		/// <summary>
+		/// Tries to get all ip address from DB
+		/// </summary>
+		/// <param name="list">ip address list</param>
+		/// <returns>Returns false if there was a problem with the database connection, otherwise true.</returns>
+		internal static bool TryGetAllIpAddresses(out List<string> list)
+		{
+			list = null;
+			DataTable table = new DataTable();
+
+			using (MySqlConnection con = new MySqlConnection(connectionString))
+			{
+				try
+				{
+					con.Open();
+
+					using (MySqlDataAdapter a = new MySqlDataAdapter("SELECT LastIPAddress FROM `user` WHERE `LastIPAddress` IS NOT NULL", con))
+					{
+						a.Fill(table);
+					}
+				}
+				catch (Exception)
+				{
+					return false;
+				}
+				finally
+				{
+					con.Close();
+				}
+			}
+
+			list = new List<string>();
+
+			try
+			{
+				foreach (DataRow row in table.Rows)
+				{
+					list.Add(row.Field<string>("LastIPAddress"));
+				}
+			}
+			catch (Exception)
+			{
+				return false;
+			}
+
+			return true;
+		}
 	}
 }

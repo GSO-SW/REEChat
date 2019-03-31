@@ -81,7 +81,8 @@ namespace Client
 			{
 				if (package is UserList userList)
 				{
-
+					Users = userList.List;
+					CFormController.MainView.UpdateUser();
 				}
 				else if (package is MessageList messageList)
 				{

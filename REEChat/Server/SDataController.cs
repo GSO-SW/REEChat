@@ -68,7 +68,7 @@ namespace Server
 					feedback = new Feedback(FeedbackCode.InternalServerError);
 				else
 				{
-					if(!SDBController.TryGetMessageList(loginRequest.Email, out List<MessagePackage> list))
+					if (!SDBController.TryGetMessageList(loginRequest.Email, out List<MessagePackage> list))
 					{
 						feedback = new Feedback(FeedbackCode.InternalServerError);
 					}
@@ -83,7 +83,7 @@ namespace Server
 						SDBController.TryUpdateSendTime(loginRequest.Email);
 
 						return;
-					}					
+					}
 				}
 			}
 
@@ -108,6 +108,15 @@ namespace Server
 				{
 					case 0:
 						feedback = new Feedback(FeedbackCode.RegistrationAccepted);
+
+						SDBController.TryGetAllIpAddresses(out List<string> addressList);
+						SDBController.TryGetClientList(out List<User> userList);
+
+						foreach (string address in addressList)
+						{
+							if (address != clientAddress)
+								SConnectionController.SendPackage(new UserList(userList), address);
+						}
 						break;
 					case 1:
 						feedback = new Feedback(FeedbackCode.InternalServerError);
@@ -186,9 +195,9 @@ namespace Server
 					{
 						sendTime = null;
 					}
-				}			
+				}
 			}
-			if(SDBController.TryAddMessage(user.Email, sendTextMessage.EMail, sendTextMessage.Text, sendTime))
+			if (SDBController.TryAddMessage(user.Email, sendTextMessage.EMail, sendTextMessage.Text, sendTime))
 			{
 				SConnectionController.SendPackage(new Feedback(FeedbackCode.MessageSendSuccess), clientAddress);
 			}

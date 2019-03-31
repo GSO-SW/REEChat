@@ -14,6 +14,7 @@ namespace Client
 {
 	public partial class CRegistrationView : Form
 	{
+		private delegate void SafeCallDelegate(bool value);
 		private int Counter { get; set; }
 
 		private bool waitForFeedback;
@@ -43,7 +44,26 @@ namespace Client
 			set
 			{
 				waitForFeedback = value;
-				buttonRegister.Enabled = !value;
+				SetEnable(!value);
+			}
+		}
+
+		public void SetEnable(bool value)
+		{
+			if (buttonRegister.InvokeRequired)
+			{
+				var d = new SafeCallDelegate(SetEnable);
+				Invoke(d, new object[] { value });
+			}
+			else
+			{
+				buttonRegister.Enabled = value;
+				txtBirthday.Enabled = value;
+				txtEmail.Enabled = value;
+				txtNickname.Enabled = value;
+				txtPassword.Enabled = value;
+				txtPassword2.Enabled = value;
+				txtServerAddress.Enabled = value;
 			}
 		}
 
@@ -153,7 +173,7 @@ namespace Client
 		private void Tick(object sender, EventArgs e)
 		{
 			Counter++;
-			if (WaitForFeedback)
+			if (!WaitForFeedback)
 			{
 				timer.Enabled = false;
 				Counter = 0;
