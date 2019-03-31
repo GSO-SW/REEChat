@@ -16,6 +16,7 @@ namespace Client
 
 	public partial class CLoginView : Form
 	{
+		private delegate void SafeCallDelegate(bool value);
 		internal int Counter { get; set; }
 
 		private bool waitForFeedback = false;
@@ -43,11 +44,24 @@ namespace Client
 			set
 			{
 				waitForFeedback = value;
-				buttonConnect.Enabled = !value;
-				buttonRegister.Enabled = !value;
-				txtAddress.Enabled = !value;
-				txtEmail.Enabled = !value;
-				txtPassword.Enabled = !value;
+				SetEnable(!value);
+			}
+		}
+
+		public void SetEnable(bool value)
+		{
+			if (buttonConnect.InvokeRequired)
+			{
+				var d = new SafeCallDelegate(SetEnable);
+				Invoke(d, new object[] { value });
+			}
+			else
+			{
+				buttonConnect.Enabled = value;
+				buttonRegister.Enabled = value;
+				txtAddress.Enabled = value;
+				txtEmail.Enabled = value;
+				txtPassword.Enabled = value;
 			}
 		}
 
