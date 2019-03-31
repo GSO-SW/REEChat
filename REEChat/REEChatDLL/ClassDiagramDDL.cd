@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="REEChatDLL.ConnectionConfig">
+    <Position X="0.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQACAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ConnectionConfig.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="REEChatDLL.DateConverter">
+    <Position X="2.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Converter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="REEChatDLL.Encode">
+    <Position X="5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Encode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="REEChatDLL.Feedback">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAEAAAAAAAAEAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Feedback.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="REEChatDLL.LoginRequest">
+    <Position X="5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AICAAAAAACAAAAAEAAAAAAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>LoginRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="REEChatDLL.MessageList">
+    <Position X="9.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAI=</HashCode>
+      <FileName>MessageList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="REEChatDLL.MessagePackage">
+    <Position X="7.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAgAAAIAAAAAAAAAEAAAAAAAACAAIAAA=</HashCode>
+      <FileName>MessagePackage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="REEChatDLL.Package">
+    <Position X="7.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAIAAAAAAAAIAAAAAAAAACAAAAAQAAAAAIAAA=</HashCode>
+      <FileName>Package.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="REEChatDLL.PackageControl">
+    <Position X="9.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAwgEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PackageControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="REEChatDLL.ReceiveTextMessage">
+    <Position X="11.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAEAAAAAAAAACAAAAAAAAAACAAIAAA=</HashCode>
+      <FileName>ReceiveTextMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="REEChatDLL.RegistrationRequest">
+    <Position X="2.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AICBAAAAACAAAAAEAAAAAAAAAAAIAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>RegistrationRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="REEChatDLL.SendTextMessage">
+    <Position X="7.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAEAAAAAAAAACAAAAAAAAAACAAIAAA=</HashCode>
+      <FileName>SendTextMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="REEChatDLL.User">
+    <Position X="11.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AICBAAAAACAAAAAEAIAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="REEChatDLL.UserList">
+    <Position X="14" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAI=</HashCode>
+      <FileName>UserList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="REEChatDLL.FeedbackCode">
+    <Position X="14" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAIAAgEAAAERAQAIAAAAAAAAAAAAAAgAgAAAAA=</HashCode>
+      <FileName>Feedback.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="REEChatDLL.PackageType">
+    <Position X="16.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAIIAABAAEACAAgAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Package.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
