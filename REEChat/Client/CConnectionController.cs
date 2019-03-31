@@ -1,7 +1,5 @@
 ﻿using REEChatDLL;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -16,12 +14,12 @@ namespace Client
 		internal static string ServerAddress { get; set; }
 		internal static Thread ThreadListener { get; set; }
 		internal static TcpListener Listener { get; set; }
-        internal static User LoginUser { get; set; }
+		internal static User LoginUser { get; set; }
 
-        /// <summary>
-        /// Starts the listener
-        /// </summary>
-        internal static void Start()
+		/// <summary>
+		/// Starts the listener
+		/// </summary>
+		internal static void Start()
 		{
 			Running = true;
 			ThreadListener = new Thread(Listen);
@@ -44,15 +42,17 @@ namespace Client
 		private static void Listen()
 		{
 			Listener = new TcpListener(IPAddress.Any, ConnectionConfig.clientPort);
+
 			try
 			{
 				Listener.Start(3);
 			}
+
 			catch (SocketException)
 			{
 				MessageBox.Show("Server kann nicht gestartet werden. Der Port [" + ConnectionConfig.clientPort + "] wird bereits verwendet.\n" +
 								"Mögliche Ursache dafür ist, dass bereits ein REEChat Client auf diesem Gerät läuft!");
-				CFormController.CancelLoginView();
+				CFormController.LoginClose();
 			}
 
 			while (Running)
@@ -73,7 +73,9 @@ namespace Client
 
 					int i = Package.TryParse(buffer, out Package package);
 					if (i == 0)
+					{
 						CDataController.ProcessingReceivedPackage(package, serverAddress);
+					}						
 				}
 				catch (SocketException)
 				{
@@ -103,13 +105,13 @@ namespace Client
 				return false;
 			}
 
-			if(sender != null)
-			{
-				NetworkStream stream = sender.GetStream();
-				stream.Write(buffer, 0, buffer.Length);
-				stream.Close();
-				sender.Close();
-			}
+			if (sender == null)
+				return false;
+
+			NetworkStream stream = sender.GetStream();
+			stream.Write(buffer, 0, buffer.Length);
+			stream.Close();
+			sender.Close();
 			return true;
 		}
 	}

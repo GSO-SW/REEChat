@@ -23,24 +23,11 @@ namespace Client
 
 			CConnectionController.Start();
 
-			StartLoginView();
-			CConnectionController.Stop();
-		}
-
-		/// <summary>
-		/// Starts CLoginView
-		/// </summary>
-		public static void StartLoginView()
-		{
 			Application.Run(new CLoginView());
-		}
+			if (CFormController.LoggedIn)
+				Application.Run(new CMainView());
 
-		/// <summary>
-		/// Starts CMainView
-		/// </summary>
-		public static void StartMainView()
-		{
-			Application.Run(new CMainView());
+			CConnectionController.Stop();
 		}
 	}
 }

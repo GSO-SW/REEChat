@@ -190,7 +190,7 @@ namespace Server
 
 			foreach (DataRow row in table.Rows)
 			{
-				if (!TryGetUserFromDataRow(row, out User user))
+				if (!TryGetMessageFromDataRow(row, out User user))
 					return false;
 				userListTemp.Add(user);
 			}
@@ -198,7 +198,7 @@ namespace Server
 			return true;
 		}
 
-		private static bool TryGetUserFromDataRow(DataRow row, out User user)
+		private static bool TryGetMessageFromDataRow(DataRow row, out User user)
 		{
 			user = null;
 			try
@@ -246,7 +246,7 @@ namespace Server
 				}
 			}
 
-			if (!TryGetUserFromDataRow(table.Rows[0], out User tUser))
+			if (!TryGetMessageFromDataRow(table.Rows[0], out User tUser))
 				return false;
 
 			user = tUser;
@@ -276,7 +276,7 @@ namespace Server
 					using (MySqlCommand command = new MySqlCommand("INSERT INTO `message` (`Sender_ID`, `Receiver_ID`, `Text`, `Send_Time`) VALUES (@Sender, @Receiver, @Text, @Send_Time);", con))
 					{
 						command.Parameters.AddWithValue("Sender", senderID);
-						command.Parameters.AddWithValue("Receiver", receiverEmail);
+						command.Parameters.AddWithValue("Receiver", receiverID);
 						command.Parameters.AddWithValue("Text", text);
 
 						if (sendTime == null)
@@ -338,6 +338,12 @@ namespace Server
 			return true;
 		}
 
+		/// <summary>
+		/// Tries to get the ip address of a user
+		/// </summary>
+		/// <param name="email">email from the user</param>
+		/// <param name="ipAddress">last ip address from the user</param>
+		/// <returns>Returns false if there was a problem with the database connection, otherwise true.</returns>
 		internal static bool TryGetIPAddressByEmail(string email, out string ipAddress)
 		{
 			ipAddress = null;
@@ -369,6 +375,121 @@ namespace Server
 			if (table.Rows != null)
 				ipAddress = table.Rows[0].Field<string>("LastIPAddress");
 			return true;
+		}
+
+		/// <summary>
+		/// Tries to get a message list 
+		/// </summary>
+		/// <param name="email">email of the user</param>
+		/// <param name="messageList">output message list</param>
+		/// <returns>Returns false if there was a problem with the database connection, otherwise true.</returns>
+		internal static bool TryGetMessageList(string email, out List<MessagePackage> messageList)
+		{
+			messageList = null;
+			DataTable table = new DataTable();
+
+			using (MySqlConnection con = new MySqlConnection(connectionString))
+			{
+				try
+				{
+					con.Open();
+
+					using (MySqlDataAdapter a = new MySqlDataAdapter("SELECT a.Email, b.Email, Send_Time, Text FROM `message` JOIN user a ON Sender_ID = a.U_ID JOIN user b ON Receiver_ID = b.U_ID WHERE a.Email=@Email OR b.Email=@Email", con))
+					{
+						a.SelectCommand.Parameters.AddWithValue("Email", email);
+
+						a.Fill(table);
+					}
+				}
+				catch (Exception)
+				{
+					return false;
+				}
+				finally
+				{
+					con.Close();
+				}
+			}
+
+			List<MessagePackage> messageListTemp = new List<MessagePackage>();
+
+			foreach (DataRow row in table.Rows)
+			{
+				if (!TryGetMessageFromDataRow(row, out MessagePackage messagePackage))
+					return false;
+				messageListTemp.Add(messagePackage);
+			}
+			messageList = messageListTemp;
+			return true;
+		}
+
+		private static bool TryGetMessageFromDataRow(DataRow row, out MessagePackage messagePackage)
+		{
+			DateTime? date;
+			messagePackage = null;
+			try
+			{
+				try
+				{
+					date = row.Field<DateTime>("Send_Time");
+				}
+				catch (Exception)
+				{
+					date = null;
+				}
+				messagePackage = new MessagePackage(row.Field<string>("Email"), row.Field<string>("Email1"), date, row.Field<string>("Text"));
+			}
+			catch (Exception)
+			{
+				return false;
+			}
+			return true;
+		}
+
+		private static DateTime ConvertFromDBVal<DateTime>(object obj)
+		{
+			if (obj == null || obj == DBNull.Value)
+			{
+				return default(DateTime); // returns the default value for the type
+			}
+			else
+			{
+				return (DateTime)obj;
+			}
+		}
+
+		/// <summary>
+		/// Tries to update the send time
+		/// </summary>
+		/// <param name="email">receiver email</param>
+		/// <returns>Returns false if there was a problem with the database connection, otherwise true.</returns>
+		internal static bool TryUpdateSendTime(string email)
+		{
+			if (!TryGetUserID(email, out int id))
+				return false;
+			using (MySqlConnection con = new MySqlConnection(connectionString))
+			{
+				try
+				{
+					con.Open();
+					using (MySqlCommand command = new MySqlCommand("UPDATE `message` SET `Send_Time`=@TimeNow WHERE `Receiver_ID`=@rid AND Send_Time IS NULL", con))
+					{
+						command.Parameters.AddWithValue("TimeNow", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+						command.Parameters.AddWithValue("rid", id);
+
+						command.ExecuteNonQuery();
+					}
+				}
+				catch (Exception)
+				{
+					return false;
+				}
+				finally
+				{
+					con.Close();
+				}
+				return true;
+			}
 		}
 	}
 }

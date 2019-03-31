@@ -11,6 +11,11 @@ namespace REEChatDLL
         public string EMail { get; set; }
         public string Text { get; set; }
 
+		/// <summary>
+		/// Creates a new instance of type SendTextMessage
+		/// </summary>
+		/// <param name="eMail"></param>
+		/// <param name="text"></param>
         public SendTextMessage(string eMail, string text)
         {
             Type = PackageType.TextMessageSend;
@@ -53,5 +58,10 @@ namespace REEChatDLL
 
             return true;
         }
-    }
+
+		public override string ToString()
+		{
+			return "[Email]: " + EMail + " [Text]: " + Text;
+		}
+	}
 }

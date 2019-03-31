@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace Server
 {
@@ -25,14 +25,6 @@ namespace Server
 					break;
 				case PackageType.LoginRequest:
 					HandlePackage((LoginRequest)package, clientAddress);
-					break;
-				case PackageType.Online:
-					break;
-				case PackageType.Offline:
-					break;
-				case PackageType.UserAdd:
-					break;
-				case PackageType.UserRemove:
 					break;
 				case PackageType.TextMessageSend:
 					HandlePackage((SendTextMessage)package, clientAddress);
@@ -76,9 +68,22 @@ namespace Server
 					feedback = new Feedback(FeedbackCode.InternalServerError);
 				else
 				{
-					UserList userListPackage = new UserList(userList);
-					SConnectionController.SendPackage(userListPackage, clientAddress);
-					return;
+					if(!SDBController.TryGetMessageList(loginRequest.Email, out List<MessagePackage> list))
+					{
+						feedback = new Feedback(FeedbackCode.InternalServerError);
+					}
+					else
+					{
+						UserList userListPackage = new UserList(userList);
+						SConnectionController.SendPackage(userListPackage, clientAddress);
+
+						MessageList messageList = new MessageList(list);
+						SConnectionController.SendPackage(messageList, clientAddress);
+
+						SDBController.TryUpdateSendTime(loginRequest.Email);
+
+						return;
+					}					
 				}
 			}
 

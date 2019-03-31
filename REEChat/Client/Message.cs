@@ -9,36 +9,50 @@ namespace Client
 {
     public class Message
     {
-        public User Sender { get; set; }
-        public User Receiver { get; set; }
-        public DateTime TimeReceived { get; set; }
-        public string Text { get; set; }
+		public string Sender { get; set; }
+		public string Receiver { get; set; }
+		public DateTime? TimeReceived { get; set; }
+		public string Text { get; set; }
 
-        public string DisplayMember
-        {
-            get
-            {
-                // [12:12:34] Ich: Hallo
-                // [12:12:45] Hans: Was geht?
+		/// <summary>
+		/// Display member for list box
+		/// </summary>
+		public string DisplayMember
+		{
+			get
+			{
+				// [12:12:34] Peter: Hallo
+				// [12:12:45] Hans: Was geht?	
+				string time = TimeReceived.Value.ToString("HH':'mm':'ss");
+				return "[" + time + "] " + Sender + ": " + Text;
+			}
+		}
 
-                string name = "";
-                string time = TimeReceived.ToString("HH':'mm':'ss");
+		/// <summary>
+		/// Creates a new instance of type Message
+		/// </summary>
+		/// <param name="sender">sender of the message</param>
+		/// <param name="receiver">receiver of the message</param>
+		/// <param name="timeReceived">time</param>
+		/// <param name="text">text</param>
+		public Message(string sender, string receiver, DateTime? timeReceived, string text)
+		{
+			Sender = sender;
+			Receiver = receiver;
+			TimeReceived = timeReceived;
+			Text = text;
+		}
 
-                if (CConnectionController.LoginUser.Email == Sender.Email)
-                    name = "Ich";
-                else
-                    name = Sender.Nickname;
-
-                return "[" + time + "] " + name + ": " + Text;
-            }
-        }
-
-        public Message(User sender, User receiver, DateTime timeReceived, string text)
-        {
-            Sender = sender;
-            Receiver = receiver;
-            TimeReceived = timeReceived;
-            Text = text;
-        }
-    }
+		/// <summary>
+		/// Creates a new instance of type Message
+		/// </summary>
+		/// <param name="messagePackage"></param>
+		public Message(MessagePackage messagePackage)
+		{
+			Sender = messagePackage.Sender;
+			Receiver = messagePackage.Receiver;
+			TimeReceived = messagePackage.TimeReceived;
+			Text = messagePackage.Text;
+		}
+	}
 }

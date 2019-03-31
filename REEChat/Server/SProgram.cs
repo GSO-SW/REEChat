@@ -74,6 +74,11 @@ namespace Server
 			Console.ForegroundColor = ConsoleColor.White; Console.WriteLine();
 		}
 
+		/// <summary>
+		/// Writes a line into the console with some information about a received package
+		/// </summary>
+		/// <param name="package">received package</param>
+		/// <param name="sender">sender ip</param>
 		internal static void WritePackageReceiveInfo(Package package, string sender)
 		{
 			WriteConsoleTime();
@@ -89,17 +94,8 @@ namespace Server
 				case PackageType.LoginRequest:
 					WriteDetail(((LoginRequest)package).ToString());
 					break;
-				case PackageType.Offline:
-					//Console.Write(((RegistrationRequest)package).ToString());
-					break;
-				case PackageType.UserAdd:
-					//Console.Write(((RegistrationRequest)package).ToString());
-					break;
-				case PackageType.UserRemove:
-					//Console.Write(((RegistrationRequest)package).ToString());
-					break;
 				case PackageType.TextMessageSend:
-					//Console.Write(((RegistrationRequest)package).ToString());
+					WriteDetail(((SendTextMessage)package).ToString());
 					break;
 				case PackageType.Ping:
 					//Console.Write(((RegistrationRequest)package).ToString());
@@ -113,6 +109,11 @@ namespace Server
 			Console.ForegroundColor = ConsoleColor.White; Console.Write("\n");
 		}
 
+		/// <summary>
+		/// Writes a line into the console with some information about a sended package
+		/// </summary>
+		/// <param name="package">sended package</param>
+		/// <param name="receiver">receiver ip</param>
 		internal static void WritePackageSendInfo(Package package, string receiver)
 		{
 			WriteConsoleTime();
@@ -123,23 +124,14 @@ namespace Server
 
 			switch (package.Type)
 			{
-				case PackageType.Online:
-					break;
-				case PackageType.Offline:
-					break;
 				case PackageType.UserList:
 					foreach (User user in ((UserList)package).List)
 					{
 						WriteDetail(user.ToString());
 					}
 					break;
-				case PackageType.UserAdd:
-					break;
-				case PackageType.UserRemove:
-					break;
-				case PackageType.TextMessageSend:
-					break;
 				case PackageType.TextMessageReceive:
+					WriteDetail(((ReceiveTextMessage)package).ToString());
 					break;
 				case PackageType.Ping:
 					break;
@@ -152,6 +144,10 @@ namespace Server
 			Console.ForegroundColor = ConsoleColor.White; Console.Write("\n");
 		}
 
+		/// <summary>
+		/// Writes a line into the console with some information about some details of a package
+		/// </summary>
+		/// <param name="detail">detail of the package</param>
 		internal static void WriteDetail(string detail)
 		{
 			WriteConsoleTime();

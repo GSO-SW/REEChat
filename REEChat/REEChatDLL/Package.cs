@@ -13,11 +13,8 @@ namespace REEChatDLL
 	{
 		RegistrationRequest = 10,
 		LoginRequest = 11,
-		Online = 12,
-		Offline = 13,
 		UserList = 14,
-		UserAdd = 15,
-		UserRemove = 16,
+		MessageList = 15,
 		TextMessageSend = 17,
 		TextMessageReceive = 18,
 		Ping = 19,
@@ -129,23 +126,21 @@ namespace REEChatDLL
 					if(LoginRequest.TryParse(userData, out LoginRequest login))
 						package = login;
 					break;
-				case PackageType.Online:
-					break;
-				case PackageType.Offline:
-					break;
 				case PackageType.UserList:
 					if (UserList.TryParse(userData, out UserList userList))
 						package = userList;
 					break;
-				case PackageType.UserAdd:
-					break;
-				case PackageType.UserRemove:
+				case PackageType.MessageList:
+					if (MessageList.TryParse(userData, out MessageList messageList))
+						package = messageList;
 					break;
 				case PackageType.TextMessageSend:
                     if (SendTextMessage.TryParse(userData, out SendTextMessage sendTextMessage))
                         package = sendTextMessage;
 					break;
 				case PackageType.TextMessageReceive:
+					if (ReceiveTextMessage.TryParse(userData, out ReceiveTextMessage receiveTextMessage))
+						package = receiveTextMessage;
 					break;
 				case PackageType.Ping:
 					break;

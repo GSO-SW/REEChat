@@ -43,7 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ReveiceTextMessage.cs" />
+    <Compile Include="MessagePackage.cs" />
+    <Compile Include="MessageList.cs" />
+    <Compile Include="ReceiveTextMessage.cs" />
     <Compile Include="SendTextMessage.cs" />
     <Compile Include="UserList.cs" />
     <Compile Include="ConnectionConfig.cs" />

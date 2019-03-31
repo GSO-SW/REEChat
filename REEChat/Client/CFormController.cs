@@ -3,57 +3,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Client
 {
-	internal static class CFormController
+	public static class CFormController
 	{
-		public static CLoginView LoginView { get; set; } = null;
-		public static CMainView MainView { get; set; } = null;
-		public static CRegistrationForm RegistrationView { get; set; }
-		public static string RegisteredEmail { get; private set; } = "";
+		internal static CLoginView LoginView { get; set; }
+		internal static CMainView MainView { get; set; }
+		internal static CRegistrationView RegistrationView { get; set; }
 
-		/// <summary>
-		/// Switchs to MainView
-		/// </summary>
-		public static void Login()
+		internal static bool LoggedIn
 		{
-			CancelLoginView();
-			CProgram.StartMainView();
+			get
+			{
+				if (CDataController.Users == null)
+					return false;
+				return true;
+			}
 		}
 
 		/// <summary>
-		/// Switchs back to LoginView
+		/// Closes the login view
 		/// </summary>
-		public static void Logoff()
-		{
-			CancelMainView();
-			CProgram.StartLoginView();
-		}
-		
-		/// <summary>
-		/// Cancels LoginView
-		/// </summary>
-		public static void CancelLoginView()
+		public static void LoginClose()
 		{
 			LoginView.Invoke(new CloseDelagate(LoginView.Close));
 		}
 
 		/// <summary>
-		/// Cancels MainView
+		/// Closes the registration view
 		/// </summary>
-		private static void CancelMainView()
+		public static void RegistrationClose()
 		{
-			MainView.Invoke(new CloseDelagate(MainView.Close));
+			RegistrationView.Invoke(new CloseDelagate(RegistrationView.Close));
 		}
 
 		/// <summary>
-		/// Cancels RegistrationView
+		/// Closes the main view
 		/// </summary>
-		public static void CancelRegistrationView()
+		public static void MainClose()
 		{
-			RegistrationView.Invoke(new CloseDelagate(RegistrationView.Close));
+			MainView.Invoke(new CloseDelagate(MainView.Close));
 		}
 	}
 }

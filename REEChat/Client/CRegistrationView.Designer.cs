@@ -1,6 +1,6 @@
 ﻿namespace Client
 {
-	partial class CRegistrationForm
+	partial class CRegistrationView
 	{
 		/// <summary>
 		/// Required designer variable.
